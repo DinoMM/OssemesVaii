@@ -1,0 +1,28 @@
+﻿@page "/"
+@using OSsemes.Data
+@using OSsemes.Data.Database
+@using Microsoft.EntityFrameworkCore
+@inject DatabaseContext dbContext
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+
+<button @onclick="Pridaj">Connect</button>
+
+<button disabled="@daco">HAHA</button>
+
+@code {
+
+    private bool daco = false;
+    public async void Pridaj()
+    {
+        var deer = dbContext.Database.GetDbConnection().Database;
+        if (dbContext.Database.CanConnect())
+        {
+            daco = true;
+        }
+        
+    }
+}

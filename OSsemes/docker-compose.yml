@@ -1,0 +1,46 @@
+version: '3.4'
+
+#docker ps -a
+#Prihlasenie do kontainera: docker exec -it app-db "bash"
+#Prihlasenie do SQL: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'FaKePaSsWoRd???!!!@@@123456789'
+#create database NAZOV;
+
+#pripojenie do SQL Server Object Explorer
+#S.N.: localhost
+#opisat meno: sa, heslo:to heslo, nazov databazy, popripade upravit v advanced moznosti tak ako v Program.cs DBStringBuilder
+
+#bridge spojenie
+networks:
+  networkapp:
+
+services:
+    
+#mssql server
+  sqlserver:
+    container_name: SQL_server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+     - 1433:1433
+    environment:
+      - MSSQL_SA_PASSWORD=FaKePaSsWoRd???!!!@@@123456789
+      - ACCEPT_EULA=Y
+    networks:
+     - networkapp
+    hostname: sqlserver
+    
+  ossemes:
+    container_name: ContainerOS
+    image: ${DOCKER_REGISTRY-}ossemes
+    build:
+      context: .
+      dockerfile: OSsemes/Dockerfile
+    ports:
+     - 8001:80 
+    networks:
+     - networkapp
+    depends_on:
+     - sqlserver
+    environment:
+     - DB_H=sqlserver
+     - DB_N=HlavnaDatabaza
+     - DB_P=FaKePaSsWoRd???!!!@@@123456789
