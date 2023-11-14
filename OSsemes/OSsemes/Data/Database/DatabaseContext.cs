@@ -6,6 +6,7 @@ namespace OSsemes.Data.Database
 {
     public class DatabaseContext : DbContext
     {
+        public DbSet<Zakaznik> Zakaznici { get; set; }
         public DatabaseContext(DbContextOptions<DatabaseContext> dbContextOptions) : base(dbContextOptions)
         {
             try
@@ -22,5 +23,7 @@ namespace OSsemes.Data.Database
                 Console.WriteLine(ex.Message);
             }
         }
+
+
     }
 }

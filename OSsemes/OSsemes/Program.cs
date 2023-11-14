@@ -25,8 +25,6 @@ DBStringBuilder.TrustServerCertificate = true;
 builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(DBStringBuilder.ConnectionString));
 ////////////////////////////////////////////////
 
-builder.Services.AddSingleton<WeatherForecastService>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

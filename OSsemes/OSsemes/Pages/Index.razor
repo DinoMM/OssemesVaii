@@ -18,11 +18,23 @@
     private bool daco = false;
     public async void Pridaj()
     {
-        var deer = dbContext.Database.GetDbConnection().Database;
+      /*  var deer = dbContext.Database.GetDbConnection().Database;
         if (dbContext.Database.CanConnect())
         {
             daco = true;
-        }
-        
+        }*/
+
+      /*  var volaco = dbContext.Zakaznici.ToList();
+        Zakaznik novy = new Zakaznik();
+        novy.Email = "email@dao.com";
+        novy.CisloIzby = 15;
+        novy.Priezvisko = "Kovac";
+        novy.DatumPrichodu = new DateTime(2023, 11, 10);
+        novy.Meno = "Jano";
+        novy.PocetDni = 2;
+        //novy.ID = 1;
+        dbContext.Zakaznici.Add(novy);
+        await dbContext.SaveChangesAsync();
+        volaco = dbContext.Zakaznici.ToList();*/
     }
 }
