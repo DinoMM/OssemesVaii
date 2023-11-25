@@ -19,4 +19,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Media\videos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\hotelMini.ico" />
+  </ItemGroup>
+
 </Project>
