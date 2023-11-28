@@ -1,0 +1,125 @@
+﻿@page "/gallery"
+<!-- Gallery -->
+
+<div class="row p-2 background-own-white">
+    <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+        <img src="https://ensanahotels.com/api/v1/media/stream/2188/thermia-from-garden?thumbnail=1920"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="Boat on Calm Water" />
+
+        <img src="https://ensanahotels.com/api/v1/media/stream/2399/new-wellness-3?thumbnail=1440"
+             class="w-100 h-50 shadow-1-strong rounded mb-4"
+             alt="Wintry Mountain Landscape" />
+    </div>
+
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <section>
+            <div class="container py-5 ">
+
+                <div class="row d-flex justify-content-center align-items-center ">
+                    <div class="card text-white" style="background-color: #1f959b; border-radius: 15px;">
+                        <div class="card-body p-4">
+
+                            <i class="bi bi-quote"></i>
+
+                            <p class="lead text-center own txt-fancy-bold cut-down-margin"
+                               style="font-family: 'Comic Sans MS',serif">Cestovanie je tá najzdravšia závislosť.</p>
+
+                            <p class="text-end"><i class="bi bi-quote otocit "></i></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <img src="https://ensanahotels.com/api/v1/media/stream/2427/deluxe-plus-room-2?thumbnail=1440"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="Boat on Calm Water" />
+    </div>
+
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <img src="https://ensanahotels.com/api/v1/media/stream/2899/hotel-thermiapalace-exterior-building?thumbnail=1440"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="Waves at Sea" />
+
+        <img src="https://ensanahotels.com/api/v1/media/stream/2452/hotel-thermia-palace-restaurant?thumbnail=1440"
+             class="w-100 h-50 shadow-1-strong rounded mb-4"
+             alt="Yosemite National Park" />
+    </div>
+</div>
+
+<!-- ------------------------------------------------ -->
+
+@* <img src="/Media/images/photosa.png" alt="asdas" /> *@
+
+<div class="container gallery-container">
+
+    <h1>Galéria hotela</h1>
+
+    <div class="tz-gallery">
+
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox">
+                    <img src="@(_imgFolderPath + "thermia-from-garden.webp")" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox">
+                    <img src="@(_imgFolderPath + "keyvisual-irma-spa.webp")" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <a class="lightbox">
+                    <img src="@(_imgFolderPath + "hotel-thermiapalace-exterior-fontain.webp")" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox">
+                    <img src="@(_imgFolderPath + "hotel-thermiapalace-exterior-building.webp")" alt="...">
+                </a>
+            </div>
+            @* <div class="col-sm-6 col-md-4">
+                <a class="lightbox" href="images/thermai-outdooe-pool.webp">
+                    <img src="images/thermai-outdooe-pool.webp" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox" href="images/new-wellness-7.webp">
+                    <img src="images/new-wellness-7.webp" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox" href="images/new-wellness-5.webp">
+                    <img src="images/new-wellness-5.webp" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox" href="images/new-wellness-1.webp">
+                    <img src="images/new-wellness-1.webp" alt="...">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a class="lightbox" href="images/key-visual-irma-spa-mudpool.webp">
+                    <img src="images/key-visual-irma-spa-mudpool.webp" alt="...">
+                </a>
+            </div> *@
+        </div>
+
+    </div>
+    
+</div>
+
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+<script>
+    baguetteBox.run('.tz-gallery');
+</script> *@
+
+
+
+
+
+@code {
+    private string _imgFolderPath = @"/Media/images/";
+}

@@ -13,6 +13,7 @@ version: '3.4'
 networks:
   networkapp:
 
+
 services:
     
 #mssql server
@@ -28,6 +29,7 @@ services:
      - networkapp
     hostname: sqlserver
     
+    
   ossemes:
     container_name: ContainerOS
     image: ${DOCKER_REGISTRY-}ossemes
@@ -35,7 +37,7 @@ services:
       context: .
       dockerfile: OSsemes/Dockerfile
     ports:
-     - 8001:80 
+     - 8000:80
     networks:
      - networkapp
     depends_on:
@@ -44,3 +46,4 @@ services:
      - DB_H=sqlserver
      - DB_N=HlavnaDatabaza
      - DB_P=FaKePaSsWoRd???!!!@@@123456789
+    

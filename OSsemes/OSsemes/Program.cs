@@ -6,12 +6,15 @@ using OSsemes.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+
 
 ///////////////////SQL SERVER CONNECTION/////////////////////////////
 SqlConnectionStringBuilder DBStringBuilder = new SqlConnectionStringBuilder();
@@ -35,6 +38,13 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+     Path.Combine(Directory.GetCurrentDirectory(), "Data/Media" )),
+    RequestPath = "/Media"
+    });
 
 app.UseRouting();
 

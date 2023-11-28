@@ -1,4 +1,5 @@
 ﻿@page "/"
+
 @using OSsemes.Data
 @using OSsemes.Data.Database
 @using Microsoft.EntityFrameworkCore
@@ -6,9 +7,13 @@
 
 <PageTitle>Hotel X</PageTitle>
 
+<OSsemes.Pages.MainPage.Carousel />
+
+<OSsemes.Pages.MainPage.Content />
 
 
 @code {
+    
 
     private bool daco = false;
     public void Pridaj()

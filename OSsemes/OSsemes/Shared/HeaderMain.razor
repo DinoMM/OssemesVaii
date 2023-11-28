@@ -6,7 +6,9 @@
 
                 <div class="container-fluid">
 
-                    <a class="navbar-brand txt-font-own" href="index.html">Hotel X</a>
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <a class="navbar-brand txt-font-own">Hotel X</a>
+                    </NavLink>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavAltMarkup"
                             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,12 +17,21 @@
 
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link txt-color-own txt-font-own txt-hover-bold" aria-current="page" href="#">O nás</a>
-                            <a class="nav-link txt-color-own txt-font-own txt-hover-bold" href="ubytovanie.html">Ubytovanie</a>
-                            <a class="nav-link txt-color-own txt-font-own txt-hover-bold" href="#">Aktivity</a>
-                            <a class="nav-link txt-color-own txt-font-own txt-hover-bold" href="#">Podujatia</a>
-                            <a class="nav-link txt-color-own txt-font-own txt-hover-bold" href="galeria.html">Galéria</a>
-                            
+                            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                                <a class="nav-link txt-color-own txt-font-own txt-hover-bold" aria-current="page">O nás</a>
+                            </NavLink>
+                            <NavLink class="nav-link" href="accommodation" Match="NavLinkMatch.All">
+                                <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Ubytovanie</a>
+                            </NavLink>
+                            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                                <a class="nav-link txt-color-own txt-font-own txt-hover-bold" >Aktivity</a>
+                            </NavLink>
+                            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                                <a class="nav-link txt-color-own txt-font-own txt-hover-bold" >Podujatia</a>
+                            </NavLink>
+                            <NavLink class="nav-link" href="gallery" Match="NavLinkMatch.All">
+                                <a class="nav-link txt-color-own txt-font-own txt-hover-bold" >Galéria</a>
+                            </NavLink>
                         </div>
                     </div>
 
