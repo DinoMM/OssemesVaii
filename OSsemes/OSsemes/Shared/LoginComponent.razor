@@ -1,0 +1,25 @@
+﻿@using OSsemes.Data.Database;
+@inject DataContext db;
+<AuthorizeView>
+    <Authorized>
+        <NavLink class="nav-link pe-3" href="Identity/Account/Logout" Match="NavLinkMatch.All">
+            <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Logged: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname </a>
+        </NavLink>
+    </Authorized>
+
+    <NotAuthorized>
+        <NavLink class="nav-link pe-3" href="Identity/Account/Login" Match="NavLinkMatch.All">
+            <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Prihlásenie</a>
+        </NavLink>
+    </NotAuthorized>
+
+    <Authorizing>
+        <NavLink class="nav-link pe-3">
+            <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Prihlásenie</a>
+        </NavLink>
+    </Authorizing>
+</AuthorizeView>
+
+@code {
+
+}

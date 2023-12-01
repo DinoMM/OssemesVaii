@@ -1,0 +1,17 @@
+﻿@page
+@using OSsemes.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using OSsemes.Data.Database
+@attribute [IgnoreAntiforgeryToken]
+@inject SignInManager<IdentityUserOwn> SignManager
+
+@functions {
+    public async Task<IActionResult> OnGet()
+    {
+        if (SignManager.IsSignedIn(User))
+        {
+            await SignManager.SignOutAsync();
+        }
+        return Redirect("~/");
+    }
+}

@@ -7,6 +7,10 @@
     --oblack: #212427;
 }
 
+.background-own-white {
+    background-color: var(--owhite);
+}
+
 html {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     max-width: 100%;

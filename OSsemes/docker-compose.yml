@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 #docker ps -a
 #Prihlasenie do kontainera: docker exec -it app-db "bash"
@@ -28,7 +28,10 @@ services:
     networks:
      - networkapp
     hostname: sqlserver
-    
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/opt/mssql/log
+      - ./secrets:/var/opt/mssql/secret
     
   ossemes:
     container_name: ContainerOS
@@ -47,3 +50,4 @@ services:
      - DB_N=HlavnaDatabaza
      - DB_P=FaKePaSsWoRd???!!!@@@123456789
     
+
