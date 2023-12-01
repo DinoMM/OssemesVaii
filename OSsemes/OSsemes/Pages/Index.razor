@@ -3,22 +3,14 @@
 @using OSsemes.Data
 @using OSsemes.Data.Database
 @using Microsoft.EntityFrameworkCore
-@* @inject DatabaseContext dbContext *@
+
 
 <PageTitle>Hotel X</PageTitle>
 
-@* <OSsemes.Pages.MainPage.Carousel />
+<OSsemes.Pages.MainPage.Carousel />
 
-<OSsemes.Pages.MainPage.Content /> *@
+<OSsemes.Pages.MainPage.Content />
 
-<AuthorizeView>
-    <Authorized>
-        Si prihlaseny. @context.User.Identity?.Name
-    </Authorized>
-    <NotAuthorized>
-        Nie si prihlaseny.
-    </NotAuthorized>
-</AuthorizeView>
 
 
 @code {
