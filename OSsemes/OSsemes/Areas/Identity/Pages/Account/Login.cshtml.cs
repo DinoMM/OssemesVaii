@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.JSInterop;
 using OSsemes.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace OSsemes.Areas.Identity.Pages.Account
 {
@@ -13,16 +15,18 @@ namespace OSsemes.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         private readonly SignInManager<IdentityUserOwn> _signInManager;
+        
 
         public LoginModel(SignInManager<IdentityUserOwn> signInManager)
         {
             _signInManager = signInManager;
+            
         }
         public void OnGet()
         {
             ReturnUrl = Url.Content("~/");
         }
-
+       
         public async Task<IActionResult> OnPostAsync()
         {
             ReturnUrl = Url.Content("~/");

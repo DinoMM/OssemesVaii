@@ -14,7 +14,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
 
         private readonly SignInManager<IdentityUserOwn> _signInManager;
         private readonly UserManager<IdentityUserOwn> _userManager;
-
+        
         public RegisterModel(SignInManager<IdentityUserOwn> signInManager, UserManager<IdentityUserOwn> userManager)
         {
             _signInManager = signInManager;
@@ -28,18 +28,19 @@ namespace OSsemes.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ReturnUrl = Url.Content("~/");
+            ReturnUrl = Url.Content("/Identity/Account/Login/RegSuccessful");
             if (ModelState.IsValid)
             {
                 var identity = new IdentityUserOwn { UserName = Input.Email, Name = Input.Name, Surname = Input.Surname, Email = Input.Email };
                 var result = await _userManager.CreateAsync(identity, Input.Password);      //posle post s identitou usera a spolu s zahashovanym heslom
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(identity, isPersistent: false);        // nastavi cookies
+                    //await _signInManager.SignInAsync(identity, isPersistent: false);        // nastavi cookies
+                    //await _userManager.AddToRoleAsync(identity, "Default");                 //nastavi default rolu
                     return LocalRedirect(ReturnUrl);
                 }
-                
-                ModelState.AddModelError(String.Empty, "Použitý email už existuje!");
+
+                ModelState.AddModelError(String.Empty, "Použitý email už existuje!");       //ked vyjde ina chyba tak bude stale vypisovat toto
                 
             }
             return Page();

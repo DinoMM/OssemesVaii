@@ -10,6 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 using OSsemes.Areas.Identity.Data;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,8 +44,14 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
         opt.Password.RequireUppercase = true;
         opt.Password.RequireNonAlphanumeric = false;
         opt.SignIn.RequireConfirmedEmail = false;
-        
-    }) .AddEntityFrameworkStores<DataContext>();
+
+
+    }).AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>();
+
+
+
 ////////////////////////////////////////////////
 var app = builder.Build();
 
@@ -68,6 +75,8 @@ app.UseRouting();
 
 app.UseAuthentication();        //povolenie autentifikacie a autorizacie
 app.UseAuthorization();
+
+RolesData.SeedRoles(app.Services).Wait();       //pridanie roli do systemu
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
