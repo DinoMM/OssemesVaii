@@ -24,9 +24,6 @@
   <ItemGroup>
     <Folder Include="Data\Media\videos\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Pages\Aktivity\" />
-    <Folder Include="Pages\AboutUs\" />
-    <Folder Include="Pages\Events\" />
   </ItemGroup>
 
   <ItemGroup>
