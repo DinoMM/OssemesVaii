@@ -28,7 +28,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ReturnUrl = Url.Content("/Identity/Account/Login/RegSuccessful");
+            ReturnUrl = Url.Content("/Identity/Account/Login");
             if (ModelState.IsValid)
             {
                 var identity = new IdentityUserOwn { UserName = Input.Email, Name = Input.Name, Surname = Input.Surname, Email = Input.Email };
@@ -36,7 +36,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     //await _signInManager.SignInAsync(identity, isPersistent: false);        // nastavi cookies
-                    //await _userManager.AddToRoleAsync(identity, "Default");                 //nastavi default rolu
+                    await _userManager.AddToRoleAsync(identity, "Guest");                 //nastavi default rolu
                     return LocalRedirect(ReturnUrl);
                 }
 

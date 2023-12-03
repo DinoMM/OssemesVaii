@@ -91,6 +91,9 @@
     -webkit-text-stroke-width: thin;
 }
 
+::deep .color-own-black {
+    color: var(--oblack);
+}
 ::deep .background-own {
     background-color: #e5e5f7;
     opacity: 0.8;
@@ -103,6 +106,10 @@
 
 ::deep .background-own-blue, .active-card:hover {
     background-color: var(--oblue);
+}
+
+::deep .background-own-darkblue {
+    background-color: var(--odarkblue);
 }
 
 ::deep .background-own-white, .light {

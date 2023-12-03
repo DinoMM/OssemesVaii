@@ -1,12 +1,85 @@
 ﻿@using OSsemes.Data.Database;
 @inject DataContext db;
-<AuthorizeView>
-    <Authorized>
-        <NavLink class="nav-link pe-3" href="Identity/Account/Logout" Match="NavLinkMatch.All">
-            <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Logged: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname </a>
-        </NavLink>
-    </Authorized>
 
+<AuthorizeView Roles="Admin">
+    @* pre admina *@
+    <Authorized>
+        <div class="dropdown dropstart">
+            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-list color-own-black"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
+                <li>
+                    <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Správa Rezervácii </a>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Reception">
+    @* pre recepciu *@
+    <Authorized>
+        <div class="dropdown dropstart">
+            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-list color-own-black"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
+                <li>
+                    <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Správa Rezervácii </a>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Guest">
+    @* pre prihlasenych hosti *@
+    <Authorized>
+        <div class="dropdown dropstart">
+            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-list color-own-black"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
+                <li>
+                    <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Nastavenia účtu </a>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Aktívne rezervácie </a>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView>
+    @* pre neprihlasenych a nacitajucich *@
     <NotAuthorized>
         <NavLink class="nav-link pe-3" href="Identity/Account/Login" Match="NavLinkMatch.All">
             <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Prihlásenie</a>

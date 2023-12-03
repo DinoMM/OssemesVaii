@@ -4,7 +4,7 @@ namespace OSsemes.Areas.Identity.Data
 {
     public static class RolesData
     {
-        private static readonly string[] Roles = new string[] { "Admin", "Reception" };     //pridavane role
+        private static readonly string[] Roles = new string[] { "Admin", "Reception", "Guest" };     //pridavane role
 
         public static async Task SeedRoles(IServiceProvider serviceProvider) {     
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())     //taktika na pridanie roli do db
