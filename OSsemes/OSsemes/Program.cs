@@ -53,6 +53,10 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
 
 
 ////////////////////////////////////////////////
+builder.Services.AddScoped<Room>();
+////////////////////////////////////////////////
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

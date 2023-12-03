@@ -1,0 +1,17 @@
+﻿.carousel .carousel-item img {
+    max-height: 60vh;
+    min-width: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+.text-block-inside-img {
+    right: 28vw !important;
+    left: 28vw !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important;
+    padding-left: 1%;
+    padding-right: 1%;
+    bottom: 1.8rem !important;
+    background: rgba(21, 24, 27, 0.6);
+}

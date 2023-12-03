@@ -1,0 +1,114 @@
+﻿@page "/Accommodation/Reserve"
+@using Data
+@using System.ComponentModel.DataAnnotations;
+@using OSsemes.Areas.Identity.Data;
+@using System.Security.Claims;
+@using OSsemes.Data.Database;
+@inject NavigationManager navManager
+@inject Room scopedRoom
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+
+<h3>Reserve: @scopedRoom.RoomName</h3>
+
+<EditForm Model="@model" OnValidSubmit="ValidSubmit" @ref="editForm">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="NumPeople">Počet osôb:</label>
+        <InputNumber id="NumPeople" @bind-Value="model.NumPeople" class="form-control" />
+        <ValidationMessage For="@(() => model.NumPeople)" />
+    </div>
+
+    <div class="form-group">
+        <label for="ArrivalDate">Počet osôb:</label>
+        <InputDate id="ArrivalDate" @bind-Value="model.ArrivalDate" class="form-control" />
+        <ValidationMessage For="@(() => model.ArrivalDate)" />
+    </div>
+
+    <div class="form-group">
+        <label for="DepartureDate">Počet osôb:</label>
+        <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" class="form-control" />
+        <ValidationMessage For="@(() => model.DepartureDate)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Objednat</button>
+</EditForm>
+
+@code {
+    private FormRegi model = new FormRegi();
+    private EditForm editForm = new EditForm();
+    private ClaimsPrincipal User;
+
+    protected override void OnInitialized()
+    {
+        //Todo vyriesit bratie informacii z cookies
+        if (scopedRoom.RoomName is null)        //ak sa niekto dostane na stranku bez kliknutia na rezervovat
+        {
+            navManager.NavigateTo("#");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        User = authState.User;
+
+    }
+
+
+    private async void ValidSubmit()
+    {
+
+        if (model.NumPeople > scopedRoom.MaxNumberOfGuest)
+        {
+            return;
+        }
+        if (model.ArrivalDate < DateTime.Now)
+        {
+            return;
+        }
+        if (model.DepartureDate < model.ArrivalDate)
+        {
+            return;
+        }
+
+        var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        if (userid is not null)
+        {
+            var IdenUser = db.Users.First(x => x.Id == userid); //mozno vymazat
+            if (IdenUser is not null)
+            {
+                Rezervation rezervacia = new Rezervation()      //vytvori rezervaciu
+                    {
+                        NumberGuest = model.NumPeople,
+                        ArrivalDate = model.ArrivalDate,
+                        DepartureDate = model.DepartureDate,
+                        GuestId = userid,
+                        Guest = IdenUser                    //mozno vymazat
+                    };
+
+                db.Rezervations.Add(rezervacia);        //pridanie rezervacie
+                await db.SaveChangesAsync();            //ulozenie stavu
+            }
+        }
+    }
+
+
+
+    public class FormRegi
+    {
+        [Required]
+        [Range(1, 100, ErrorMessage = "Čislo musí byť kladné")]
+        public int NumPeople { get; set; } = 1;
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime ArrivalDate { get; set; } = DateTime.Now;
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime DepartureDate { get; set; } = DateTime.Now;
+    }
+}
