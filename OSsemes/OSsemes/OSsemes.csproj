@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="Data\Media\videos\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Pages\Accommodation\Rooms\" />
   </ItemGroup>
 
   <ItemGroup>

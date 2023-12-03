@@ -26,6 +26,8 @@ namespace OSsemes.Data.Database
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public DbSet<Rezervation> Rezervations { get; set; }
     }
 
     public class YourDbContextFactory : IDesignTimeDbContextFactory<DataContext>
@@ -38,4 +40,6 @@ namespace OSsemes.Data.Database
             return new DataContext(optionsBuilder.Options);
         }
     }
+
+   
 }

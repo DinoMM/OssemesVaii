@@ -5,10 +5,10 @@
     @* pre admina *@
     <Authorized>
         <div class="dropdown dropstart">
-            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-list color-own-black"></i>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
                 <li>
                     <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
@@ -53,10 +53,10 @@
     @* pre prihlasenych hosti *@
     <Authorized>
         <div class="dropdown dropstart">
-            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn background-own-darkblue" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-list color-own-black"></i>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                 <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
                 <li>
                     <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
