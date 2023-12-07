@@ -18,5 +18,29 @@ namespace OSsemes.Data
 
         public IdentityUserOwn Guest { get; set; }
 
+
+        //public void setToDef()
+        //{
+        //    Id = 0;
+        //    RoomNumber = 0;
+        //    ArrivalDate = DateTime.Now;
+        //    DepartureDate = DateTime.Now;
+        //    NumberGuest = 0;
+        //    GuestId = "";
+        //    Guest = new IdentityUserOwn();
+        //}
+
+        public void setFromReservation(Rezervation res)
+        {
+            Id = res.Id;
+            RoomNumber = res.RoomNumber;
+            ArrivalDate = res.ArrivalDate;
+            DepartureDate = res.DepartureDate;
+            NumberGuest = res.NumberGuest;
+            GuestId = res.GuestId;
+            Guest = res.Guest;
+        }
     }
+
+
 }

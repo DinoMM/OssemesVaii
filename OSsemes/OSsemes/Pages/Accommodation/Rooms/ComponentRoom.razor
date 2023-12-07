@@ -1,6 +1,7 @@
 ﻿@using Data
-@inject NavigationManager navManager
+@* @inject NavigationManager navManager *@
 @inject Room scopedRoom
+@inject Rezervation scopedRes
 
 @* ---------------Carousel Dorobit do komponenta------------------- *@
 <div class="row">
@@ -155,6 +156,7 @@
     private void SetRoom()
     {
         scopedRoom.setFromOtherRoom(ModeledRoom);
+        scopedRes.setFromReservation(new Rezervation());
     }
 
 

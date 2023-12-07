@@ -1,11 +1,11 @@
 ﻿@page "/Accommodation/Reserve"
-@using Data
 @using System.ComponentModel.DataAnnotations;
 @using OSsemes.Areas.Identity.Data;
 @using System.Security.Claims;
 @using OSsemes.Data.Database;
 @inject NavigationManager navManager
 @inject Room scopedRoom
+@inject Rezervation scopedRes
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataContext db
 
@@ -37,31 +37,39 @@
 </EditForm>
 
 @code {
+
     private FormRegi model = new FormRegi();
     private EditForm editForm = new EditForm();
-    private ClaimsPrincipal User;
+    private ClaimsPrincipal user;
 
     protected override void OnInitialized()
     {
-        //Todo vyriesit bratie informacii z cookies
-        if (scopedRoom.RoomName is null)        //ak sa niekto dostane na stranku bez kliknutia na rezervovat
+
+        if (string.IsNullOrEmpty(scopedRoom.RoomName) && string.IsNullOrEmpty(scopedRes.GuestId))        //ak sa niekto dostane na stranku bez kliknutia na rezervovat alebo modify
         {
             navManager.NavigateTo("#");
         }
+        if (!string.IsNullOrEmpty(scopedRes.GuestId))
+        {
+            model.NumPeople = scopedRes.NumberGuest;
+            model.ArrivalDate = scopedRes.ArrivalDate;
+            model.DepartureDate = scopedRes.DepartureDate;
+        }
+
     }
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        User = authState.User;
+        user = authState.User;
 
     }
 
 
     private async void ValidSubmit()
     {
-
-        if (model.NumPeople > scopedRoom.MaxNumberOfGuest)
+        //todo dorobit novy field
+        if (model.NumPeople > 3)  //scopedRoom.MaxNumberOfGuest
         {
             return;
         }
@@ -74,12 +82,15 @@
             return;
         }
 
-        var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        //todo dorobit overenie datumu
+
+        var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
         if (userid is not null)
         {
             var IdenUser = db.Users.First(x => x.Id == userid); //mozno vymazat
             if (IdenUser is not null)
             {
+                scopedRoom.setFromOtherRoom(new Room());
                 Rezervation rezervacia = new Rezervation()      //vytvori rezervaciu
                     {
                         NumberGuest = model.NumPeople,
@@ -88,9 +99,18 @@
                         GuestId = userid,
                         Guest = IdenUser                    //mozno vymazat
                     };
-
+                if (scopedRes.Id != 0 && userid == scopedRes.GuestId)
+                {
+                    rezervacia.Id = scopedRes.Id;
+                    scopedRes.setFromReservation(new Rezervation());
+                    db.Rezervations.First(x => x.Id == rezervacia.Id).setFromReservation(rezervacia);
+                    await db.SaveChangesAsync();            //ulozenie stavu
+                    navManager.NavigateTo("MyReservations");
+                    return;
+                }
                 db.Rezervations.Add(rezervacia);        //pridanie rezervacie
                 await db.SaveChangesAsync();            //ulozenie stavu
+                navManager.NavigateTo("#");
             }
         }
     }

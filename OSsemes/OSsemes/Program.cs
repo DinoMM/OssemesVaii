@@ -54,6 +54,7 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
 
 ////////////////////////////////////////////////
 builder.Services.AddScoped<Room>();
+builder.Services.AddScoped<Rezervation>();
 ////////////////////////////////////////////////
 
 
