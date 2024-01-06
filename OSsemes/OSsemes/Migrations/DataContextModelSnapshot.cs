@@ -267,7 +267,7 @@ namespace OSsemes.Migrations
 
             modelBuilder.Entity("OSsemes.Data.Room", b =>
                 {
-                    b.Property<string>("RoomName")
+                    b.Property<string>("RoomNumber")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Cost")
@@ -276,7 +276,11 @@ namespace OSsemes.Migrations
                     b.Property<int>("MaxNumberOfGuest")
                         .HasColumnType("int");
 
-                    b.HasKey("RoomName");
+                    b.Property<string>("RoomCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoomNumber");
 
                     b.ToTable("HRooms");
                 });

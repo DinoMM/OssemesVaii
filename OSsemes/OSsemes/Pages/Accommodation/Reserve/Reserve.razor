@@ -3,6 +3,7 @@
 @using OSsemes.Areas.Identity.Data;
 @using System.Security.Claims;
 @using OSsemes.Data.Database;
+@using OSsemes.Pages.Accommodation.Rooms;
 @inject NavigationManager navManager
 @inject Room scopedRoom
 @inject Rezervation scopedRes
@@ -15,7 +16,14 @@
            Header="Nutné prihlásenie"
            FuncAction="RegisterLink">
 </InfoModal>
-<h3>Reserve: @scopedRoom.RoomName</h3>
+<ApproveModal @ref="ulozZmenyMod"
+              Text="@sumarize"
+              Header="Rezervačný systém"
+              FuncOnSucc="SaveChanges"
+              FuncOnDiss="EventCallback.Empty">
+
+</ApproveModal>
+<h3>Reserve: @scopedRoom.RoomCategory</h3>
 
 <EditForm EditContext="editContext" OnValidSubmit="ValidSubmit">
     <DataAnnotationsValidator />
@@ -29,13 +37,15 @@
 
     <div class="form-group ms-3">
         <label for="ArrivalDate">Dátum príchodu</label>
-        <InputDate id="ArrivalDate" @bind-Value="model.ArrivalDate" class="form-control w-25" />
+        <InputDate id="ArrivalDate" @bind-Value="model.ArrivalDate" @onblur="calculateSum" class="form-control w-25" />
     </div>
 
     <div class="form-group ms-3">
         <label for="DepartureDate">Dátum odchodu</label>
-        <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" class="form-control w-25" />
+        <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" @onblur="calculateSum" class="form-control w-25" />
     </div>
+
+    <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") </h3>
 
     <button type="submit" class="btn btn-primary m-3" @onclick="clearValMess">Objednať</button>
 </EditForm>
@@ -50,15 +60,22 @@
     private ClaimsPrincipal user;
     private EditContext editContext;
     private ValidationMessageStore validationMessageStore;
+    private double totalSum = 0.0;
+    Rezervation newReservation;
+
     private InfoModal infoMod;
+    private ApproveModal ulozZmenyMod;
+
+    private string sumarize = "";
 
 
 
     protected override void OnInitialized()
     {
-        if (string.IsNullOrEmpty(scopedRoom.RoomName) && string.IsNullOrEmpty(scopedRes.GuestId))        //ak sa niekto dostane na stranku bez kliknutia na rezervovat alebo modify
+        if (string.IsNullOrEmpty(scopedRoom.RoomCategory) && string.IsNullOrEmpty(scopedRes.GuestId))        //ak sa niekto dostane na stranku bez kliknutia na rezervovat alebo modify
         {
             navManager.NavigateTo("#");
+            return;
         }
         if (!string.IsNullOrEmpty(scopedRes.GuestId))
         {
@@ -81,21 +98,43 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        user = authState.User;
-        // if (user.FindFirstValue(ClaimTypes.NameIdentifier) is null)
-        // {
-        //     //pridat session a vypisat modal, poppup
-        //     navManager.NavigateTo("#");
-        // }
+        user = authState.User;          //ziskanie aktualneho prihlaseneho pouzivatela
 
+    }
 
+    private void calculateSum()
+    {
+        totalSum = 0.0;
+        if (model.ArrivalDate is null || model.DepartureDate is null)
+        {
+            return;
+        }
+        /*if (!(model.NumPeople > 0 && model.NumPeople < 6))
+            {
+            return;
+        }*/
+        if (!(model.ArrivalDate.Value > DateTime.Now))
+        {
+            return;
+        }
+        if (!(model.DepartureDate.Value > model.ArrivalDate.Value))
+        {
+            return;
+        }
+        if ((int)(model.DepartureDate.Value.Date - model.ArrivalDate.Value.Date).TotalDays > 30)
+        {
+            return;
+        }
+        double costDay = string.IsNullOrEmpty(scopedRoom.RoomCategory) ? scopedRes.Room.Cost : scopedRoom.Cost;
+        totalSum = (int)(model.DepartureDate.Value.Date - model.ArrivalDate.Value.Date).TotalDays * costDay;
     }
 
 
     private async void ValidSubmit()
     {
-
-        if (model.NumPeople > 3)  //scopedRoom.MaxNumberOfGuest
+        //dodatocna kontrola vstupov
+        var editRoom = string.IsNullOrEmpty(scopedRoom.RoomCategory) ? scopedRes.Room : scopedRoom;     //pre jednoduchsie pracovanie
+        if (model.NumPeople > editRoom.MaxNumberOfGuest)  //scopedRoom.MaxNumberOfGuest
         {
             validationMessageStore.Add(editContext.Field(nameof(FormRegi.NumPeople)), "Počet ľudí nesmie prekročiť kapacitu izby");    //vlastny error
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
@@ -103,7 +142,7 @@
         }
         if ((int)(model.ArrivalDate.Value.Date - DateTime.Now.Date).TotalDays <= 0)
         {
-            validationMessageStore.Add(editContext.Field(nameof(FormRegi.ArrivalDate)), "Dátum príchodu musí byť neskorej ako je dnešný dátum " + model.ArrivalDate.Value.ToString("MM-dd-yyyy"));    //vlastny error
+            validationMessageStore.Add(editContext.Field(nameof(FormRegi.ArrivalDate)), "Dátum príchodu musí byť neskorej ako je dnešný dátum ");    //vlastny error
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
             return;
         }
@@ -121,52 +160,121 @@
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
             return;
         }
-
-        //todo dorobit overenie exitujucich
-
-
-        Rezervation rezervacia = new Rezervation()      //vytvori rezervaciu
+        //vytvorenie rezervacie pre jednoduchost
+        newReservation = new Rezervation()      //vytvori rezervaciu
             {
                 NumberGuest = model.NumPeople,
                 ArrivalDate = model.ArrivalDate.Value.Date,
                 DepartureDate = model.DepartureDate.Value.Date,
+                Room = new Room()
             };
+        switch (editRoom.RoomCategory)
+        {
+            case "Izba Deluxe":
+                editRoom = RoomDeluxe.GetRoomInfo();
+                break;
 
+            default: Console.WriteLine("Kategoria izby nebola najdena v Reserve"); break;
+        }
+
+        //kontrola existencie nejakej existujucej rezervacie
+        newReservation.Room.setFromOtherRoom(editRoom);     //nastavenie povinnych parametrov
+        foreach (var item in editRoom.RoomIds)
+        {
+            if (db.Rezervations.Count() != 0)
+            {
+                if (db.Rezervations.FirstOrDefault(x => x.Room.RoomNumber == editRoom.RoomNumber &&
+                (newReservation.ArrivalDate < x.DepartureDate && x.ArrivalDate < newReservation.DepartureDate)) is not null)
+                {
+                    continue;
+                }
+            }
+            newReservation.RoomNumber = item;
+            newReservation.Room.RoomNumber = item;
+            break;
+        }
+        if (string.IsNullOrEmpty(newReservation.RoomNumber))        //ak sa v predoslom cykle nic nepriradilo tak vyhodime ze vsetky miestnosti su plne
+        {
+            validationMessageStore.Add(editContext.Field(nameof(FormRegi.ArrivalDate)), "Pre zvolený dátum už exituje rezervácia, skúste iný");    //vlastny error
+            editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
+            return;
+        }
+
+
+        //uspesny input a je volna miestnost, zavadzaju sa zmeny
         var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
         if (userid is not null)
         {
             var IdenUser = db.Users.First(x => x.Id == userid); //mozno vymazat
             if (IdenUser is not null)
             {
-                scopedRoom.setFromOtherRoom(new Room());        //vycistenie
-                rezervacia.GuestId = userid;            //pridanie prihlaseneho usera do rezervacie
-                rezervacia.Guest = IdenUser;            //mozno vymazat
-
-                if (scopedRes.Id != 0 && userid == scopedRes.GuestId)       //modifikacia
+                calculateSum();
+                if (totalSum != 0)
                 {
-                    rezervacia.Id = scopedRes.Id;
-                    scopedRes.setFromReservation(new Rezervation());
-                    db.Rezervations.First(x => x.Id == rezervacia.Id).setFromReservation(rezervacia);
-                    await db.SaveChangesAsync();            //ulozenie stavu
-                    navManager.NavigateTo("MyReservations");
-                    return;
+                    newReservation.CelkovaSuma = (decimal)totalSum;
                 }
-                db.Rezervations.Add(rezervacia);        //pridanie rezervacie
-                await db.SaveChangesAsync();            //ulozenie stavu
-                await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
-                navManager.NavigateTo("#");
+                if (string.IsNullOrEmpty(scopedRoom.RoomCategory))
+                {
+                    sumarize = "Chcete si zmeniť tento termín na nový?<br>" +
+                    "Číslo izby: " + newReservation.RoomNumber + "<br>" +
+                    "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
+                    "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
+                    "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
+                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma;
+                }
+                else
+                {
+                    sumarize = "Chcete si zarezervovať tento termín?<br>" +
+                    "Číslo izby: " + newReservation.RoomNumber + "<br>" +
+                    "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
+                    "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
+                    "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
+                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma; 
+                }
+                await ulozZmenyMod.OpenModal();       //zobrazi potvrdenie ci chceme pokracovat
             }
+
         }
         else
         {
             //ak neni prihlaseny pouzivatel tak sa ho presmeruje na registraciu
             //await sessionStorage.SetItemAsync("ResOK_NoLoggin", true);          //nastavenie lokalneho ulozenia
-           //scopedRes.setFromReservation(rezervacia);                   //ulozenie aktualnej rezervacie
+            //scopedRes.setFromReservation(rezervacia);                   //ulozenie aktualnej rezervacie            await infoMod.OpenModal();
             await infoMod.OpenModal();
         }
 
+    }
 
+    private async Task SaveChanges()
+    {
+        var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        var IdenUser = db.Users.First(x => x.Id == userid); //ziska sa hodnota z databazy, ktora je interne prepojena
+        if (IdenUser is not null && userid is not null)
+        {
+            scopedRoom.setFromOtherRoom(new Room());        //vycistenie
+            newReservation.GuestId = userid;            //pridanie prihlaseneho usera do rezervacie
+            newReservation.Guest = IdenUser;            //nemazat
 
+            Room? prislusnaRoom = db.HRooms.FirstOrDefault(room => room.RoomNumber == newReservation.RoomNumber); //ziska sa hodnota z databazy, ktora je interne prepojena
+            if (prislusnaRoom != null)
+            {
+                newReservation.Room = prislusnaRoom;            //nemazat
+                newReservation.RoomNumber = prislusnaRoom.RoomNumber;
+                if (scopedRes.Id != 0 && userid == scopedRes.GuestId)       //modifikacia
+                {
+                    newReservation.Id = scopedRes.Id;
+                    scopedRes.setFromReservation(new Rezervation());
+                    db.Rezervations.First(x => x.Id == newReservation.Id).setFromReservation(newReservation);
+                    await db.SaveChangesAsync();            //ulozenie stavu
+                    navManager.NavigateTo("MyReservations");
+                    return;
+                }
+                db.Rezervations.Add(newReservation);        //pridanie rezervacie
+                await db.SaveChangesAsync();            //ulozenie stavu
+                await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
+                navManager.NavigateTo("#");
+            }
+        }
     }
 
     private void RegisterLink()

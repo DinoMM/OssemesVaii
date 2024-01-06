@@ -9,7 +9,7 @@
     {
         _room = new Room();
 
-        _room.RoomName = "Izba Deluxe";
+        _room.RoomCategory = "Izba Deluxe";
         _room.Describe = new string[]
         {
             "Vstupná hala s veľkou uzavretou skriňou, šatníkom, veľkým zrkadlom a trezorom",
@@ -35,5 +35,20 @@
         _room.Photos = new string[] { };        //TODO
         _room.MaxNumberOfGuest = 3;
         _room.Cost = 100;
+        _room.RoomIds = new string[]
+        {
+            "101","102"
+        };
+
+    }
+
+    public Room getRoom()
+    {
+        return _room;
+    }
+
+    public static Room GetRoomInfo()
+    {
+       return new RoomDeluxe().getRoom();
     }
 }

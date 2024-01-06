@@ -22,14 +22,14 @@ namespace OSsemes.Data.Database
                     if (!databaseCreator.HasTables()) databaseCreator.CreateTables();   //vytvori tabulky ak databaza nema tabulky
                     if (HRooms is not null)
                     {
-                        if (HRooms.Count() == 0)
+                        if (HRooms.Count() == 0)        //prida zaznamy ak je tabulka prazdna
                         {
-                            HRooms.Add(new Room() { RoomName = "101", MaxNumberOfGuest = 3, Cost = 100.00 });
-                            HRooms.Add(new Room() { RoomName = "102", MaxNumberOfGuest = 3, Cost = 100.00 });
-                            HRooms.Add(new Room() { RoomName = "201", MaxNumberOfGuest = 3, Cost = 150.00 });
-                            HRooms.Add(new Room() { RoomName = "202", MaxNumberOfGuest = 3, Cost = 150.00 });
-                            HRooms.Add(new Room() { RoomName = "301", MaxNumberOfGuest = 6, Cost = 210.00 });
-                            HRooms.Add(new Room() { RoomName = "302", MaxNumberOfGuest = 6, Cost = 210.00 });
+                            HRooms.Add(new Room() { RoomNumber = "101", RoomCategory = "Izba Deluxe", MaxNumberOfGuest = 3, Cost = 100.00 });
+                            HRooms.Add(new Room() { RoomNumber = "102", RoomCategory = "Izba Deluxe", MaxNumberOfGuest = 3, Cost = 100.00 });
+                            HRooms.Add(new Room() { RoomNumber = "201", RoomCategory = "Izba Apartman", MaxNumberOfGuest = 3, Cost = 150.00 });
+                            HRooms.Add(new Room() { RoomNumber = "202", RoomCategory = "Izba Apartman", MaxNumberOfGuest = 3, Cost = 150.00 });
+                            HRooms.Add(new Room() { RoomNumber = "301", RoomCategory = "Izba ApaDelux", MaxNumberOfGuest = 6, Cost = 210.00 });
+                            HRooms.Add(new Room() { RoomNumber = "302", RoomCategory = "Izba ApaDelux", MaxNumberOfGuest = 6, Cost = 210.00 });
                         }                        
                     }
                    

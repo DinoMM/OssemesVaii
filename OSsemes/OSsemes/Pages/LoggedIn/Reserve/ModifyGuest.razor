@@ -32,8 +32,8 @@
             {
                 <tr>
                     <th scope="row">@activeR.Id</th>
-                    <td>@activeR.ArrivalDate.ToString("yyyy:MM:dd")</td>
-                    <td>@activeR.DepartureDate.ToString("yyyy:MM:dd")</td>
+                    <td>@activeR.ArrivalDate.ToString("dd.MM.yyyy")</td>
+                    <td>@activeR.DepartureDate.ToString("dd.MM.yyyy")</td>
                     <td>@activeR.RoomNumber</td>
                     <td>@activeR.NumberGuest</td>
                     <td>
@@ -87,6 +87,17 @@ else
 
     private void Zmen(Rezervation active)
     {
+        if (active.Room is null && !string.IsNullOrEmpty(active.RoomNumber))
+        {
+            Room? founded = db.HRooms.FirstOrDefault(x => x.RoomNumber == active.RoomNumber);
+            if (founded is null)
+            {
+                Console.WriteLine("Nemozno najst miestnost");
+                return;
+            } 
+            active.Room = founded;
+        }
+        
         scopedRes.setFromReservation(active);
         scopedRoom.setFromOtherRoom(new Room());
         navManager.NavigateTo("Accommodation/Reserve");

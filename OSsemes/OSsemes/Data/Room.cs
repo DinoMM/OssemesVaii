@@ -1,13 +1,17 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OSsemes.Data
 {
     public class Room
     {
         [Key]
-        public string RoomName { get; set; }
+        public string RoomNumber { get; set; }        //id miestnosti
+        public string RoomCategory { get; set; }        //kategoria
+        [NotMapped]
+        public string[] RoomIds { get; set; }
         [NotMapped]
         public string[] Describe { get; set; }
         [NotMapped]
@@ -23,12 +27,13 @@ namespace OSsemes.Data
         public double Cost { get; set; }       //cena za den
 
         public void setFromOtherRoom(Room room) {
-            RoomName = room.RoomName;
-            Describe = room.Describe;
-            Furnishing = room.Furnishing;
-            Bathroom = room.Bathroom;
-            Services = room.Services;
-            Photos = room.Photos;
+            RoomNumber = room.RoomNumber;
+            RoomCategory = room.RoomCategory;
+            //Describe = room.Describe;
+            //Furnishing = room.Furnishing;
+            //Bathroom = room.Bathroom;
+            //Services = room.Services;
+            //Photos = room.Photos;
             MaxNumberOfGuest = room.MaxNumberOfGuest;
             Cost = room.Cost;
         }

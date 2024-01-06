@@ -40,6 +40,8 @@ namespace OSsemes.Data
         {
             Id = res.Id;
             RoomNumber = res.RoomNumber;
+            Room = res.Room;
+            CelkovaSuma = res.CelkovaSuma;
             ArrivalDate = res.ArrivalDate;
             DepartureDate = res.DepartureDate;
             NumberGuest = res.NumberGuest;

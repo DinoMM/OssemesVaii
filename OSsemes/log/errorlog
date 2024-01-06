@@ -184,3 +184,30 @@
 2024-01-06 12:01:14.63 spid46s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
 2024-01-06 12:04:57.80 spid52      XE session 'telemetry_xevents' stopping.
 2024-01-06 12:04:57.83 spid52      XE session 'telemetry_xevents' started.
+2024-01-06 12:46:37.08 spid7s      [DevOpsSnapshotTelemetryTask] Evaluating the background task.
+2024-01-06 13:05:07.58 spid51      XE session 'telemetry_xevents' stopping.
+2024-01-06 13:05:07.61 spid51      XE session 'telemetry_xevents' started.
+2024-01-06 14:05:15.38 spid51      XE session 'telemetry_xevents' stopping.
+2024-01-06 14:05:15.44 spid51      XE session 'telemetry_xevents' started.
+2024-01-06 15:05:21.49 spid51      XE session 'telemetry_xevents' stopping.
+2024-01-06 15:05:21.54 spid51      XE session 'telemetry_xevents' started.
+2024-01-06 15:29:36.75 spid54      Setting database option SINGLE_USER to ON for database 'HlavnaDatabaza'.
+2024-01-06 15:29:48.43 Logon       Error: 18456, Severity: 14, State: 38.
+2024-01-06 15:29:48.43 Logon       Login failed for user 'sa'. Reason: Failed to open the explicitly specified database 'HlavnaDatabaza'. [CLIENT: 172.19.0.1]
+2024-01-06 15:29:51.97 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2024-01-06 15:29:51.98 spid52      Starting up database 'HlavnaDatabaza'.
+2024-01-06 15:29:51.98 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2024-01-06 15:29:51.98 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2024-01-06 15:29:52.72 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2024-01-06 15:29:52.86 spid52      Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2024-01-06 15:29:53.58 spid52      Setting database option READ_COMMITTED_SNAPSHOT to ON for database 'HlavnaDatabaza'.
+2024-01-06 15:29:54.19 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2024-01-06 15:29:54.19 spid52      Starting up database 'HlavnaDatabaza'.
+2024-01-06 15:29:54.19 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2024-01-06 15:29:54.19 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2024-01-06 15:29:54.97 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2024-01-06 15:29:55.58 spid47s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2024-01-06 16:05:27.15 spid51      XE session 'telemetry_xevents' stopping.
+2024-01-06 16:05:27.20 spid51      XE session 'telemetry_xevents' started.
+2024-01-06 17:05:34.54 spid51      XE session 'telemetry_xevents' stopping.
+2024-01-06 17:05:34.58 spid51      XE session 'telemetry_xevents' started.
