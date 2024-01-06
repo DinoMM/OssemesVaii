@@ -1,8 +1,11 @@
+using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OSsemes.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace OSsemes.Areas.Identity.Pages.Account
 {
@@ -12,9 +15,11 @@ namespace OSsemes.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
         public string ReturnUrl { get; set; }
 
+
         private readonly SignInManager<IdentityUserOwn> _signInManager;
         private readonly UserManager<IdentityUserOwn> _userManager;
-        
+       
+
         public RegisterModel(SignInManager<IdentityUserOwn> signInManager, UserManager<IdentityUserOwn> userManager)
         {
             _signInManager = signInManager;
@@ -41,7 +46,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
                 }
 
                 ModelState.AddModelError(String.Empty, "Použitý email už existuje!");       //ked vyjde ina chyba tak bude stale vypisovat toto
-                
+
             }
             return Page();
         }

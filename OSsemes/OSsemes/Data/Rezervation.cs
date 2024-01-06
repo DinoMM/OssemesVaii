@@ -16,7 +16,12 @@ namespace OSsemes.Data
         [Column(TypeName = "nvarchar(450)")]
         public string GuestId { get; set; }             //id Usera
 
+        [ForeignKey("Room")]
+        public string IDroom { get; set; }                  //id miestnosti
+
         public IdentityUserOwn Guest { get; set; }
+
+        public Room Room { get; set; }
 
 
         //public void setToDef()

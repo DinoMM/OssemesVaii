@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 using OSsemes.Areas.Identity.Data;
 using System.Runtime.CompilerServices;
+using Blazored.SessionStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,8 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
 ////////////////////////////////////////////////
 builder.Services.AddScoped<Room>();
 builder.Services.AddScoped<Rezervation>();
+builder.Services.AddBlazoredSessionStorage();           //pre ukladanie dovtedy ked sa nezatvori prehliadac
+ //najst nuget alebo uz funguje?                       //Blazored.LocalStorage  pre ukladanie aj po zavreti prehliadaca
 ////////////////////////////////////////////////
 
 
@@ -82,6 +85,7 @@ app.UseAuthentication();        //povolenie autentifikacie a autorizacie
 app.UseAuthorization();
 
 RolesData.SeedRoles(app.Services).Wait();       //pridanie roli do systemu
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

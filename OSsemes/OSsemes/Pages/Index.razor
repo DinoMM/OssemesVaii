@@ -3,8 +3,10 @@
 @using OSsemes.Data
 @using OSsemes.Data.Database
 @using Microsoft.EntityFrameworkCore
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-
+<InfoModal @ref="infoReg" Text="Rezervácia prebehla úspešne. Ďakujeme." />
+@* <ApproveModal @ref="mod" Text="Chces pokracovat?" FuncOnSucc="succes" FuncOnDiss="EventCallback.Empty"/> *@
 <PageTitle>Hotel X</PageTitle>
 
 <OSsemes.Pages.MainPage.Carousel />
@@ -13,6 +15,32 @@
 
 
 @code {
+    private InfoModal infoReg;
+    //     private ApproveModal mod;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)        //ak uz bol prvy render
+        {
+            if ((await sessionStorage.GetItemAsync<bool>("ResCreated")))        //prejdenie session storageu
+            {
+                await infoReg.OpenModal();
+                await sessionStorage.SetItemAsync("ResCreated", false);
+            }
+        }
+    }
+
+
+    // private void succes()
+    // {
+    //     Console.WriteLine("Uspech");
+    // }
+
+    // private void notsuc()
+    // {
+    //     Console.WriteLine("NEUSPECHHH");
+        // }
+
 
 
 }

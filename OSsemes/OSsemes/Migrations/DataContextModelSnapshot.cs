@@ -246,6 +246,10 @@ namespace OSsemes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("IDroom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("NumberGuest")
                         .HasColumnType("int");
 
@@ -256,7 +260,25 @@ namespace OSsemes.Migrations
 
                     b.HasIndex("GuestId");
 
+                    b.HasIndex("IDroom");
+
                     b.ToTable("Rezervations");
+                });
+
+            modelBuilder.Entity("OSsemes.Data.Room", b =>
+                {
+                    b.Property<string>("RoomName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MaxNumberOfGuest")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoomName");
+
+                    b.ToTable("HRooms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -318,7 +340,15 @@ namespace OSsemes.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OSsemes.Data.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("IDroom")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Guest");
+
+                    b.Navigation("Room");
                 });
 #pragma warning restore 612, 618
         }

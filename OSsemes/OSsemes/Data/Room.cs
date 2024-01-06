@@ -1,13 +1,22 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace OSsemes.Data
 {
     public class Room
     {
+        [Key]
         public string RoomName { get; set; }
+        [NotMapped]
         public string[] Describe { get; set; }
+        [NotMapped]
         public string[] Furnishing { get; set; }
+        [NotMapped]
         public string[] Bathroom { get; set; }
+        [NotMapped]
         public string[] Services { get; set; }
+        [NotMapped]
         public string[] Photos { get; set; }
 
         public int MaxNumberOfGuest { get; set; }

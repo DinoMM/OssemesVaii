@@ -28,6 +28,7 @@ namespace OSsemes.Data.Database
         }
 
         public DbSet<Rezervation> Rezervations { get; set; }
+        public DbSet<Room> HRooms { get; set; }
     }
 
     public class YourDbContextFactory : IDesignTimeDbContextFactory<DataContext>

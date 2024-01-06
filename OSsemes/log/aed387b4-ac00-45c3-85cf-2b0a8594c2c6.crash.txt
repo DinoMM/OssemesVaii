@@ -1,0 +1,26 @@
+This program has encountered a fatal error and cannot continue running at Fri Dec  8 10:20:20 2023
+The following diagnostic information is available:
+
+         Reason: 0x00000003
+         Status: 0x00000002
+        Message: result != DK_STREAM_NULL
+          Stack:
+                 IP               Function
+                 ---------------- --------------------------------------
+                 000055ca6a422271 std::__1::bad_function_call::~bad_function_call()+0x29e81
+                 000055ca6a421c36 std::__1::bad_function_call::~bad_function_call()+0x29846
+                 000055ca6a39022f std::__1::basic_filebuf<char, std::__1::char_traits<char>>::basic_filebuf()+0x10c5f
+                 000055ca6a3c6e0e std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0x1868e
+                 000055ca6a3ba18d std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0xba0d
+                 000055ca6a3b9e57 std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0xb6d7
+        Process: 10 - sqlservr
+         Thread: 120 (application thread 0x1d4)
+    Instance Id: b24d8ea0-418c-46a4-918b-813f49b3e63b
+       Crash Id: aed387b4-ac00-45c3-85cf-2b0a8594c2c6
+    Build stamp: d04b54494c24dfab3cea8f5e24d6c546bbb594d92ba476a9d2c3a92f4123a813
+   Distribution: Ubuntu 20.04.6 LTS
+     Processors: 8
+   Total Memory: 8292073472 bytes
+      Timestamp: Fri Dec  8 10:20:20 2023
+     Last errno: 2
+Last errno text: No such file or directory

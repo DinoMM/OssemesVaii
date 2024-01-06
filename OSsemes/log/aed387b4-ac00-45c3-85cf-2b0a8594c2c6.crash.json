@@ -1,0 +1,53 @@
+{
+    "reason": "0x00000003",
+    "processName": "sqlservr",
+    "pid": "10",
+    "instanceId": "b24d8ea0-418c-46a4-918b-813f49b3e63b",
+    "crashId": "aed387b4-ac00-45c3-85cf-2b0a8594c2c6",
+    "threadState": "0x00007f92881366a8",
+    "threadId": "120",
+    "libosThreadId": "0x1d4",
+    "buildStamp": "d04b54494c24dfab3cea8f5e24d6c546bbb594d92ba476a9d2c3a92f4123a813",
+    "versions": [
+        {
+            "name": "",
+            "buildId": "",
+            "buildType": "",
+            "src": "",
+            "date": "",
+            "buildNum": "245725"
+        },
+        {
+            "name": "",
+            "buildId": "",
+            "buildType": "",
+            "src": "",
+            "date": "",
+            "buildNum": "245725"
+        }
+    ],
+    "status": "0x00000002",
+    "message": "result != DK_STREAM_NULL",
+    "stack": [
+        "0x000055ca6a423996",
+        "0x000055ca6a421c44",
+        "0x000055ca6a39022f",
+        "0x000055ca6a3c6e0e",
+        "0x000055ca6a3ba18d",
+        "0x000055ca6a3b9e57"
+    ],
+    "stackText": [
+        "std::__1::bad_function_call::~bad_function_call()+0x2b5a6",
+        "std::__1::bad_function_call::~bad_function_call()+0x29854",
+        "std::__1::basic_filebuf<char, std::__1::char_traits<char>>::basic_filebuf()+0x10c5f",
+        "std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0x1868e",
+        "std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0xba0d",
+        "std::__1::basic_stringbuf<char, std::__1::char_traits<char>, std::__1::allocator<char>>::str() const+0xb6d7"
+    ],
+    "last_errno": "2",
+    "last_errno_text": "No such file or directory",
+    "distribution": "Ubuntu 20.04.6 LTS",
+    "processors": "8",
+    "total_memory": "8292073472",
+    "timestamp": "Fri Dec  8 10:20:20 2023"
+}

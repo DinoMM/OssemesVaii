@@ -1,178 +1,205 @@
-2023-12-03 13:06:56.07 Server      Microsoft SQL Server 2022 (RTM-CU9) (KB5030731) - 16.0.4085.2 (X64) 
+2023-12-18 20:27:31.74 Server      Microsoft SQL Server 2022 (RTM-CU9) (KB5030731) - 16.0.4085.2 (X64) 
 	Sep 27 2023 12:05:43 
 	Copyright (C) 2022 Microsoft Corporation
 	Developer Edition (64-bit) on Linux (Ubuntu 20.04.6 LTS) <X64>
-2023-12-03 13:06:56.07 Server      UTC adjustment: 0:00
-2023-12-03 13:06:56.07 Server      (c) Microsoft Corporation.
-2023-12-03 13:06:56.07 Server      All rights reserved.
-2023-12-03 13:06:56.07 Server      Server process ID is 468.
-2023-12-03 13:06:56.07 Server      Logging SQL Server messages in file '/var/opt/mssql/log/errorlog'.
-2023-12-03 13:06:56.08 Server      Registry startup parameters: 
+2023-12-18 20:27:31.74 Server      UTC adjustment: 0:00
+2023-12-18 20:27:31.74 Server      (c) Microsoft Corporation.
+2023-12-18 20:27:31.74 Server      All rights reserved.
+2023-12-18 20:27:31.75 Server      Server process ID is 492.
+2023-12-18 20:27:31.75 Server      Logging SQL Server messages in file '/var/opt/mssql/log/errorlog'.
+2023-12-18 20:27:31.75 Server      Registry startup parameters: 
 	 -d /var/opt/mssql/data/master.mdf
 	 -l /var/opt/mssql/data/mastlog.ldf
 	 -e /var/opt/mssql/log/errorlog
-2023-12-03 13:06:56.10 Server      SQL Server detected 1 sockets with 4 cores per socket and 8 logical processors per socket, 8 total logical processors; using 8 logical processors based on SQL Server licensing. This is an informational message; no user action is required.
-2023-12-03 13:06:56.10 Server      SQL Server is starting at normal priority base (=7). This is an informational message only. No user action is required.
-2023-12-03 13:06:56.11 Server      Detected 6326 MB of RAM. This is an informational message; no user action is required.
-2023-12-03 13:06:56.11 Server      Using conventional memory in the memory manager.
-2023-12-03 13:06:56.11 Server      Detected pause instruction latency: 70 cycles.
-2023-12-03 13:06:56.11 Server      Page exclusion bitmap is enabled.
-2023-12-03 13:06:56.15 Server      Buffer pool extension is not supported on Linux platform.
-2023-12-03 13:06:56.16 Server      Buffer Pool: Allocating 1048576 bytes for 920282 hashPages.
-2023-12-03 13:06:56.29 Server      Buffer pool extension is already disabled. No action is necessary.
-2023-12-03 13:06:56.78 Server      Installing Client TLS certificates to the store.
-2023-12-03 13:06:56.79 Server      Error searching first file in /var/opt/mssql/security/ca-certificates: 3(The system cannot find the path specified.)
-2023-12-03 13:06:56.79 Server      CPU vectorization level(s) detected:  SSE SSE2 SSE3 SSSE3 SSE41 SSE42 AVX AVX2 POPCNT BMI1 BMI2
-2023-12-03 13:06:56.85 Server      Successfully initialized the TLS configuration. Allowed TLS protocol versions are ['1.0 1.1 1.2']. Allowed TLS ciphers are ['ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:!DHE-RSA-AES256-GCM-SHA384:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!DHE-RSA-AES128-SHA'].
-2023-12-03 13:06:56.87 Server      Query Store settings initialized with enabled = 1, 
-2023-12-03 13:06:56.89 Server      The maximum number of dedicated administrator connections for this instance is '1'
-2023-12-03 13:06:56.89 Server      Node configuration: node 0: CPU mask: 0x00000000000000ff:0 Active CPU mask: 0x00000000000000ff:0. This message provides a description of the NUMA configuration for this computer. This is an informational message only. No user action is required.
-2023-12-03 13:06:56.91 Server      Using dynamic lock allocation.  Initial allocation of 2500 Lock blocks and 5000 Lock Owner blocks per node.  This is an informational message only.  No user action is required.
-2023-12-03 13:06:56.94 Server      In-Memory OLTP initialized on lowend machine.
-2023-12-03 13:06:57.01 Server      CLR version v4.0.30319 loaded.
-2023-12-03 13:06:57.29 Server      Common language runtime (CLR) functionality initialized.
-2023-12-03 13:06:57.40 Server      [INFO] Created Extended Events session 'hkenginexesession'
-2023-12-03 13:06:57.40 Server      Database Instant File Initialization: enabled. For security and performance considerations see the topic 'Database Instant File Initialization' in SQL Server Books Online. This is an informational message only. No user action is required.
-2023-12-03 13:06:57.42 Server      Total Log Writer threads: 2. This is an informational message; no user action is required.
-2023-12-03 13:06:57.43 Server      clflushopt is selected for pmem flush operation.
-2023-12-03 13:06:57.44 Server      Software Usage Metrics is disabled.
-2023-12-03 13:06:57.45 spid26s     [1]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:06:57.46 spid26s     Starting up database 'master'.
-2023-12-03 13:06:57.87 Server      External governance manager initialized
-2023-12-03 13:06:58.48 spid26s     42 transactions rolled forward in database 'master' (1:0). This is an informational message only. No user action is required.
-2023-12-03 13:06:58.65 spid26s     0 transactions rolled back in database 'master' (1:0). This is an informational message only. No user action is required.
-2023-12-03 13:06:58.65 spid26s     Recovery is writing a checkpoint in database 'master' (1). This is an informational message only. No user action is required.
-2023-12-03 13:06:59.44 spid26s     Service Master Key could not be decrypted using one of its encryptions. See sys.key_encryptions for details.
-2023-12-03 13:06:59.45 spid26s     An error occurred during Service Master Key initialization. SQLErrorCode=33095, State=14, LastOsError=2.
-2023-12-03 13:06:59.45 spid26s     [32762]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:06:59.46 spid26s     Starting up database 'model_replicatedmaster'.
-2023-12-03 13:06:59.50 spid29s     [32767]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:06:59.51 spid29s     Starting up database 'mssqlsystemresource'.
-2023-12-03 13:06:59.52 spid29s     The resource database build version is 16.00.4085. This is an informational message only. No user action is required.
-2023-12-03 13:06:59.56 spid29s     [3]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:06:59.56 spid29s     Starting up database 'model'.
-2023-12-03 13:06:59.62 spid37s     A self-generated certificate was successfully loaded for encryption.
-2023-12-03 13:06:59.63 spid37s     Server is listening on [ 'any' <ipv6> 1433] accept sockets 1.
-2023-12-03 13:06:59.63 spid37s     Server is listening on [ 'any' <ipv4> 1433] accept sockets 1.
-2023-12-03 13:06:59.64 Server      Server is listening on [ ::1 <ipv6> 1434] accept sockets 1.
-2023-12-03 13:06:59.65 Server      Server is listening on [ 127.0.0.1 <ipv4> 1434] accept sockets 1.
-2023-12-03 13:06:59.65 Server      Dedicated admin connection support was established for listening locally on port 1434.
-2023-12-03 13:06:59.66 spid37s     Server is listening on [ ::1 <ipv6> 1431] accept sockets 1.
-2023-12-03 13:06:59.66 spid37s     Server is listening on [ 127.0.0.1 <ipv4> 1431] accept sockets 1.
-2023-12-03 13:06:59.67 spid37s     SQL Server is now ready for client connections. This is an informational message; no user action is required.
-2023-12-03 13:07:00.63 spid26s     The tail of the log for database model_replicatedmaster is being rewritten to match the new sector size of 4096 bytes.  2560 bytes at offset 99840 in file /var/opt/mssql/data/model_replicatedmaster.ldf will be written.
-2023-12-03 13:07:00.73 spid26s     Converting database 'model_replicatedmaster' from version 927 to the current version 957.
-2023-12-03 13:07:00.73 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 927 to version 928.
-2023-12-03 13:07:00.89 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 928 to version 929.
-2023-12-03 13:07:01.16 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 929 to version 930.
-2023-12-03 13:07:01.71 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 930 to version 931.
-2023-12-03 13:07:01.85 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 931 to version 932.
-2023-12-03 13:07:02.00 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 932 to version 933.
-2023-12-03 13:07:02.13 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 933 to version 934.
-2023-12-03 13:07:02.28 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 934 to version 935.
-2023-12-03 13:07:02.45 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 935 to version 936.
-2023-12-03 13:07:02.58 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 936 to version 937.
-2023-12-03 13:07:02.72 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 937 to version 938.
-2023-12-03 13:07:02.85 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 938 to version 939.
-2023-12-03 13:07:03.08 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 939 to version 940.
-2023-12-03 13:07:03.53 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 940 to version 941.
-2023-12-03 13:07:03.76 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 941 to version 942.
-2023-12-03 13:07:04.18 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 942 to version 943.
-2023-12-03 13:07:04.74 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 943 to version 944.
-2023-12-03 13:07:04.89 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 944 to version 945.
-2023-12-03 13:07:05.02 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 945 to version 946.
-2023-12-03 13:07:05.41 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 946 to version 947.
-2023-12-03 13:07:05.54 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 947 to version 948.
-2023-12-03 13:07:05.71 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 948 to version 949.
-2023-12-03 13:07:05.84 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 949 to version 950.
-2023-12-03 13:07:05.99 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 950 to version 951.
-2023-12-03 13:07:06.15 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 951 to version 952.
-2023-12-03 13:07:06.28 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 952 to version 953.
-2023-12-03 13:07:06.69 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 953 to version 954.
-2023-12-03 13:07:06.82 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 954 to version 955.
-2023-12-03 13:07:06.96 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 955 to version 956.
-2023-12-03 13:07:07.36 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 956 to version 957.
-2023-12-03 13:07:08.34 spid26s     [32761]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:07:08.34 spid26s     Starting up database 'model_msdb'.
-2023-12-03 13:07:09.08 spid26s     Converting database 'model_msdb' from version 927 to the current version 957.
-2023-12-03 13:07:09.08 spid26s     Database 'model_msdb' running the upgrade step from version 927 to version 928.
-2023-12-03 13:07:09.26 spid26s     Database 'model_msdb' running the upgrade step from version 928 to version 929.
-2023-12-03 13:07:09.47 spid26s     Database 'model_msdb' running the upgrade step from version 929 to version 930.
-2023-12-03 13:07:09.63 spid26s     Database 'model_msdb' running the upgrade step from version 930 to version 931.
-2023-12-03 13:07:09.76 spid26s     Database 'model_msdb' running the upgrade step from version 931 to version 932.
-2023-12-03 13:07:09.91 spid26s     Database 'model_msdb' running the upgrade step from version 932 to version 933.
-2023-12-03 13:07:10.29 spid26s     Database 'model_msdb' running the upgrade step from version 933 to version 934.
-2023-12-03 13:07:10.43 spid26s     Database 'model_msdb' running the upgrade step from version 934 to version 935.
-2023-12-03 13:07:10.57 spid26s     Database 'model_msdb' running the upgrade step from version 935 to version 936.
-2023-12-03 13:07:10.72 spid26s     Database 'model_msdb' running the upgrade step from version 936 to version 937.
-2023-12-03 13:07:10.86 spid26s     Database 'model_msdb' running the upgrade step from version 937 to version 938.
-2023-12-03 13:07:11.00 spid26s     Database 'model_msdb' running the upgrade step from version 938 to version 939.
-2023-12-03 13:07:11.15 spid26s     Database 'model_msdb' running the upgrade step from version 939 to version 940.
-2023-12-03 13:07:11.28 spid26s     Database 'model_msdb' running the upgrade step from version 940 to version 941.
-2023-12-03 13:07:11.47 spid26s     Database 'model_msdb' running the upgrade step from version 941 to version 942.
-2023-12-03 13:07:11.61 spid26s     Database 'model_msdb' running the upgrade step from version 942 to version 943.
-2023-12-03 13:07:12.07 spid26s     Database 'model_msdb' running the upgrade step from version 943 to version 944.
-2023-12-03 13:07:12.22 spid26s     Database 'model_msdb' running the upgrade step from version 944 to version 945.
-2023-12-03 13:07:12.58 spid26s     Database 'model_msdb' running the upgrade step from version 945 to version 946.
-2023-12-03 13:07:12.71 spid26s     Database 'model_msdb' running the upgrade step from version 946 to version 947.
-2023-12-03 13:07:12.84 spid26s     Database 'model_msdb' running the upgrade step from version 947 to version 948.
-2023-12-03 13:07:12.98 spid26s     Database 'model_msdb' running the upgrade step from version 948 to version 949.
-2023-12-03 13:07:13.14 spid26s     Database 'model_msdb' running the upgrade step from version 949 to version 950.
-2023-12-03 13:07:13.33 spid26s     Database 'model_msdb' running the upgrade step from version 950 to version 951.
-2023-12-03 13:07:13.49 spid26s     Database 'model_msdb' running the upgrade step from version 951 to version 952.
-2023-12-03 13:07:13.63 spid26s     Database 'model_msdb' running the upgrade step from version 952 to version 953.
-2023-12-03 13:07:13.77 spid26s     Database 'model_msdb' running the upgrade step from version 953 to version 954.
-2023-12-03 13:07:13.90 spid26s     Database 'model_msdb' running the upgrade step from version 954 to version 955.
-2023-12-03 13:07:14.03 spid26s     Database 'model_msdb' running the upgrade step from version 955 to version 956.
-2023-12-03 13:07:14.20 spid26s     Database 'model_msdb' running the upgrade step from version 956 to version 957.
-2023-12-03 13:07:14.91 spid43s     Attribute synchronization initialized
-2023-12-03 13:07:14.91 spid43s     Attribute synchronization manager initialized
-2023-12-03 13:07:14.91 spid26s     Resource governor reconfiguration succeeded.
-2023-12-03 13:07:14.92 spid26s     SQL Server Audit is starting the audits. This is an informational message. No user action is required.
-2023-12-03 13:07:14.92 spid26s     SQL Server Audit has started the audits. This is an informational message. No user action is required.
-2023-12-03 13:07:14.93 spid26s     XE session 'system_health' started.
-2023-12-03 13:07:15.28 spid26s     XE session 'telemetry_xevents' started.
-2023-12-03 13:07:15.55 spid26s     SQL Trace ID 1 was started by login "sa".
-2023-12-03 13:07:15.74 spid26s     Server name is 'sqlserver'. This is an informational message only. No user action is required.
-2023-12-03 13:07:15.76 spid29s     Clearing tempdb database.
-2023-12-03 13:07:15.76 spid72s     Always On: The availability replica manager is starting. This is an informational message only. No user action is required.
-2023-12-03 13:07:15.76 spid74s     [4]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:07:15.77 spid75s     [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:07:15.77 spid72s     Always On: The availability replica manager is waiting for the instance of SQL Server to allow client connections. This is an informational message only. No user action is required.
-2023-12-03 13:07:15.77 spid74s     Starting up database 'msdb'.
-2023-12-03 13:07:15.77 spid75s     Starting up database 'HlavnaDatabaza'.
-2023-12-03 13:07:15.78 spid75s     RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
-2023-12-03 13:07:15.78 spid75s     RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
-2023-12-03 13:07:17.13 spid75s     Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
-2023-12-03 13:07:17.27 spid74s     1 transactions rolled forward in database 'msdb' (4:0). This is an informational message only. No user action is required.
-2023-12-03 13:07:17.37 spid75s     301 transactions rolled forward in database 'HlavnaDatabaza' (5:0). This is an informational message only. No user action is required.
-2023-12-03 13:07:17.45 spid27s     Using 'dbghelp.dll' version '4.0.5'
-2023-12-03 13:07:17.69 spid26s     0 transactions rolled back in database 'msdb' (4:0). This is an informational message only. No user action is required.
-2023-12-03 13:07:17.80 spid26s     0 transactions rolled back in database 'HlavnaDatabaza' (5:0). This is an informational message only. No user action is required.
-2023-12-03 13:07:17.80 spid26s     Recovery is writing a checkpoint in database 'HlavnaDatabaza' (5). This is an informational message only. No user action is required.
-2023-12-03 13:07:18.06 spid26s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
-2023-12-03 13:07:18.66 spid29s     [2]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
-2023-12-03 13:07:18.66 spid29s     Starting up database 'tempdb'.
-2023-12-03 13:07:26.62 spid29s     The tempdb database has 8 data file(s).
-2023-12-03 13:07:26.66 spid72s     The Service Broker endpoint is in disabled or stopped state.
-2023-12-03 13:07:26.66 spid72s     The Database Mirroring endpoint is in disabled or stopped state.
-2023-12-03 13:07:26.69 spid72s     Service Broker manager has started.
-2023-12-03 13:07:26.70 spid26s     Recovery is complete. This is an informational message only. No user action is required.
-2023-12-03 13:11:58.72 spid54      XE session 'telemetry_xevents' stopping.
-2023-12-03 13:11:58.77 spid54      XE session 'telemetry_xevents' started.
-2023-12-03 13:12:36.52 spid54      Attempting to load library 'xplog70.dll' into memory. This is an informational message only. No user action is required.
-2023-12-03 13:12:36.54 spid54      Using 'xplog70.dll' version '2022.160.4085' to execute extended stored procedure 'xp_msver'. This is an informational message only; no user action is required.
-2023-12-03 13:28:05.10 spid54      XE session 'telemetry_xevents' stopping.
-2023-12-03 13:28:05.14 spid54      XE session 'telemetry_xevents' started.
-2023-12-03 14:06:58.34 spid13s     [DevOpsSnapshotTelemetryTask] Evaluating the background task.
-2023-12-03 14:24:45.30 spid52      Attempting to load library 'xpstar.dll' into memory. This is an informational message only. No user action is required.
-2023-12-03 14:24:45.34 spid52      Using 'xpstar.dll' version '2022.160.4085' to execute extended stored procedure 'xp_instance_regread'. This is an informational message only; no user action is required.
-2023-12-03 14:28:16.68 spid51      XE session 'telemetry_xevents' stopping.
-2023-12-03 14:28:16.72 spid51      XE session 'telemetry_xevents' started.
-2023-12-03 15:28:28.33 spid51      XE session 'telemetry_xevents' stopping.
-2023-12-03 15:28:28.37 spid51      XE session 'telemetry_xevents' started.
-2023-12-03 15:45:52.37 spid26s     Always On: The availability replica manager is going offline because SQL Server is shutting down. This is an informational message only. No user action is required.
-2023-12-03 15:45:52.38 spid26s     SQL Server is terminating in response to a 'stop' request from Service Control Manager. This is an informational message only. No user action is required.
-2023-12-03 15:45:52.38 spid26s     .NET Framework runtime has been stopped.
-2023-12-03 15:45:52.50 spid72s     Service Broker manager has shut down.
-2023-12-03 15:45:55.72 spid26s     SQL Trace was stopped due to server shutdown. Trace ID = '1'. This is an informational message only; no user action is required.
+2023-12-18 20:27:31.77 Server      SQL Server detected 1 sockets with 4 cores per socket and 8 logical processors per socket, 8 total logical processors; using 8 logical processors based on SQL Server licensing. This is an informational message; no user action is required.
+2023-12-18 20:27:31.77 Server      SQL Server is starting at normal priority base (=7). This is an informational message only. No user action is required.
+2023-12-18 20:27:31.77 Server      Detected 6326 MB of RAM. This is an informational message; no user action is required.
+2023-12-18 20:27:31.77 Server      Using conventional memory in the memory manager.
+2023-12-18 20:27:31.78 Server      Detected pause instruction latency: 70 cycles.
+2023-12-18 20:27:31.78 Server      Page exclusion bitmap is enabled.
+2023-12-18 20:27:31.82 Server      Buffer pool extension is not supported on Linux platform.
+2023-12-18 20:27:31.82 Server      Buffer Pool: Allocating 1048576 bytes for 920246 hashPages.
+2023-12-18 20:27:31.96 Server      Buffer pool extension is already disabled. No action is necessary.
+2023-12-18 20:27:32.47 Server      Installing Client TLS certificates to the store.
+2023-12-18 20:27:32.48 Server      Error searching first file in /var/opt/mssql/security/ca-certificates: 3(The system cannot find the path specified.)
+2023-12-18 20:27:32.49 Server      CPU vectorization level(s) detected:  SSE SSE2 SSE3 SSSE3 SSE41 SSE42 AVX AVX2 POPCNT BMI1 BMI2
+2023-12-18 20:27:32.54 Server      Successfully initialized the TLS configuration. Allowed TLS protocol versions are ['1.0 1.1 1.2']. Allowed TLS ciphers are ['ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:!DHE-RSA-AES256-GCM-SHA384:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!DHE-RSA-AES128-SHA'].
+2023-12-18 20:27:32.57 Server      Query Store settings initialized with enabled = 1, 
+2023-12-18 20:27:32.59 Server      The maximum number of dedicated administrator connections for this instance is '1'
+2023-12-18 20:27:32.59 Server      Node configuration: node 0: CPU mask: 0x00000000000000ff:0 Active CPU mask: 0x00000000000000ff:0. This message provides a description of the NUMA configuration for this computer. This is an informational message only. No user action is required.
+2023-12-18 20:27:32.61 Server      Using dynamic lock allocation.  Initial allocation of 2500 Lock blocks and 5000 Lock Owner blocks per node.  This is an informational message only.  No user action is required.
+2023-12-18 20:27:32.64 Server      In-Memory OLTP initialized on lowend machine.
+2023-12-18 20:27:32.71 Server      CLR version v4.0.30319 loaded.
+2023-12-18 20:27:32.97 Server      Common language runtime (CLR) functionality initialized.
+2023-12-18 20:27:33.20 Server      [INFO] Created Extended Events session 'hkenginexesession'
+2023-12-18 20:27:33.20 Server      Database Instant File Initialization: enabled. For security and performance considerations see the topic 'Database Instant File Initialization' in SQL Server Books Online. This is an informational message only. No user action is required.
+2023-12-18 20:27:33.22 Server      Total Log Writer threads: 2. This is an informational message; no user action is required.
+2023-12-18 20:27:33.23 Server      clflushopt is selected for pmem flush operation.
+2023-12-18 20:27:33.23 Server      Software Usage Metrics is disabled.
+2023-12-18 20:27:33.25 spid26s     [1]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:33.26 spid26s     Starting up database 'master'.
+2023-12-18 20:27:33.60 Server      External governance manager initialized
+2023-12-18 20:27:34.02 spid26s     30 transactions rolled forward in database 'master' (1:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:34.10 spid26s     0 transactions rolled back in database 'master' (1:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:34.10 spid26s     Recovery is writing a checkpoint in database 'master' (1). This is an informational message only. No user action is required.
+2023-12-18 20:27:34.37 spid26s     Encountered Internal Error while calling ImportKey. Error code 15, State 9.
+2023-12-18 20:27:34.37 spid26s     Service Master Key could not be decrypted using one of its encryptions. See sys.key_encryptions for details.
+2023-12-18 20:27:34.38 spid26s     An error occurred during Service Master Key initialization. SQLErrorCode=33095, State=9, LastOsError=183.
+2023-12-18 20:27:34.38 spid26s     [32762]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:34.39 spid29s     [32767]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:34.39 spid26s     Starting up database 'model_replicatedmaster'.
+2023-12-18 20:27:34.40 spid29s     Starting up database 'mssqlsystemresource'.
+2023-12-18 20:27:34.40 spid29s     The resource database build version is 16.00.4085. This is an informational message only. No user action is required.
+2023-12-18 20:27:34.44 spid29s     [3]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:34.44 spid29s     Starting up database 'model'.
+2023-12-18 20:27:34.67 spid37s     A self-generated certificate was successfully loaded for encryption.
+2023-12-18 20:27:34.67 spid37s     Server is listening on [ 'any' <ipv6> 1433] accept sockets 1.
+2023-12-18 20:27:34.68 spid37s     Server is listening on [ 'any' <ipv4> 1433] accept sockets 1.
+2023-12-18 20:27:34.68 Server      Server is listening on [ ::1 <ipv6> 1434] accept sockets 1.
+2023-12-18 20:27:34.69 Server      Server is listening on [ 127.0.0.1 <ipv4> 1434] accept sockets 1.
+2023-12-18 20:27:34.69 Server      Dedicated admin connection support was established for listening locally on port 1434.
+2023-12-18 20:27:34.70 spid37s     Server is listening on [ ::1 <ipv6> 1431] accept sockets 1.
+2023-12-18 20:27:34.70 spid37s     Server is listening on [ 127.0.0.1 <ipv4> 1431] accept sockets 1.
+2023-12-18 20:27:34.70 spid37s     SQL Server is now ready for client connections. This is an informational message; no user action is required.
+2023-12-18 20:27:35.59 spid26s     The tail of the log for database model_replicatedmaster is being rewritten to match the new sector size of 4096 bytes.  2560 bytes at offset 99840 in file /var/opt/mssql/data/model_replicatedmaster.ldf will be written.
+2023-12-18 20:27:35.73 spid26s     Converting database 'model_replicatedmaster' from version 927 to the current version 957.
+2023-12-18 20:27:35.73 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 927 to version 928.
+2023-12-18 20:27:35.86 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 928 to version 929.
+2023-12-18 20:27:36.11 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 929 to version 930.
+2023-12-18 20:27:36.74 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 930 to version 931.
+2023-12-18 20:27:36.87 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 931 to version 932.
+2023-12-18 20:27:37.00 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 932 to version 933.
+2023-12-18 20:27:37.14 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 933 to version 934.
+2023-12-18 20:27:37.27 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 934 to version 935.
+2023-12-18 20:27:37.39 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 935 to version 936.
+2023-12-18 20:27:37.54 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 936 to version 937.
+2023-12-18 20:27:37.68 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 937 to version 938.
+2023-12-18 20:27:38.06 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 938 to version 939.
+2023-12-18 20:27:38.19 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 939 to version 940.
+2023-12-18 20:27:38.32 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 940 to version 941.
+2023-12-18 20:27:38.45 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 941 to version 942.
+2023-12-18 20:27:38.58 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 942 to version 943.
+2023-12-18 20:27:39.12 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 943 to version 944.
+2023-12-18 20:27:39.54 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 944 to version 945.
+2023-12-18 20:27:39.67 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 945 to version 946.
+2023-12-18 20:27:39.86 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 946 to version 947.
+2023-12-18 20:27:40.23 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 947 to version 948.
+2023-12-18 20:27:40.35 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 948 to version 949.
+2023-12-18 20:27:40.48 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 949 to version 950.
+2023-12-18 20:27:40.90 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 950 to version 951.
+2023-12-18 20:27:41.24 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 951 to version 952.
+2023-12-18 20:27:41.58 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 952 to version 953.
+2023-12-18 20:27:42.11 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 953 to version 954.
+2023-12-18 20:27:42.45 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 954 to version 955.
+2023-12-18 20:27:42.78 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 955 to version 956.
+2023-12-18 20:27:43.69 spid26s     Database 'model_replicatedmaster' running the upgrade step from version 956 to version 957.
+2023-12-18 20:27:45.07 spid26s     [32761]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:45.07 spid26s     Starting up database 'model_msdb'.
+2023-12-18 20:27:45.87 spid26s     Converting database 'model_msdb' from version 927 to the current version 957.
+2023-12-18 20:27:45.87 spid26s     Database 'model_msdb' running the upgrade step from version 927 to version 928.
+2023-12-18 20:27:45.98 spid26s     Database 'model_msdb' running the upgrade step from version 928 to version 929.
+2023-12-18 20:27:46.21 spid26s     Database 'model_msdb' running the upgrade step from version 929 to version 930.
+2023-12-18 20:27:46.35 spid26s     Database 'model_msdb' running the upgrade step from version 930 to version 931.
+2023-12-18 20:27:46.48 spid26s     Database 'model_msdb' running the upgrade step from version 931 to version 932.
+2023-12-18 20:27:46.61 spid26s     Database 'model_msdb' running the upgrade step from version 932 to version 933.
+2023-12-18 20:27:47.01 spid26s     Database 'model_msdb' running the upgrade step from version 933 to version 934.
+2023-12-18 20:27:47.15 spid26s     Database 'model_msdb' running the upgrade step from version 934 to version 935.
+2023-12-18 20:27:47.27 spid26s     Database 'model_msdb' running the upgrade step from version 935 to version 936.
+2023-12-18 20:27:47.40 spid26s     Database 'model_msdb' running the upgrade step from version 936 to version 937.
+2023-12-18 20:27:47.54 spid26s     Database 'model_msdb' running the upgrade step from version 937 to version 938.
+2023-12-18 20:27:47.66 spid26s     Database 'model_msdb' running the upgrade step from version 938 to version 939.
+2023-12-18 20:27:47.79 spid26s     Database 'model_msdb' running the upgrade step from version 939 to version 940.
+2023-12-18 20:27:47.91 spid26s     Database 'model_msdb' running the upgrade step from version 940 to version 941.
+2023-12-18 20:27:48.07 spid26s     Database 'model_msdb' running the upgrade step from version 941 to version 942.
+2023-12-18 20:27:48.20 spid26s     Database 'model_msdb' running the upgrade step from version 942 to version 943.
+2023-12-18 20:27:48.73 spid26s     Database 'model_msdb' running the upgrade step from version 943 to version 944.
+2023-12-18 20:27:48.95 spid26s     Database 'model_msdb' running the upgrade step from version 944 to version 945.
+2023-12-18 20:27:49.32 spid26s     Database 'model_msdb' running the upgrade step from version 945 to version 946.
+2023-12-18 20:27:49.46 spid26s     Database 'model_msdb' running the upgrade step from version 946 to version 947.
+2023-12-18 20:27:49.60 spid26s     Database 'model_msdb' running the upgrade step from version 947 to version 948.
+2023-12-18 20:27:49.74 spid26s     Database 'model_msdb' running the upgrade step from version 948 to version 949.
+2023-12-18 20:27:49.87 spid26s     Database 'model_msdb' running the upgrade step from version 949 to version 950.
+2023-12-18 20:27:50.20 spid26s     Database 'model_msdb' running the upgrade step from version 950 to version 951.
+2023-12-18 20:27:50.50 spid26s     Database 'model_msdb' running the upgrade step from version 951 to version 952.
+2023-12-18 20:27:50.72 spid26s     Database 'model_msdb' running the upgrade step from version 952 to version 953.
+2023-12-18 20:27:50.87 spid26s     Database 'model_msdb' running the upgrade step from version 953 to version 954.
+2023-12-18 20:27:51.04 spid26s     Database 'model_msdb' running the upgrade step from version 954 to version 955.
+2023-12-18 20:27:51.17 spid26s     Database 'model_msdb' running the upgrade step from version 955 to version 956.
+2023-12-18 20:27:51.37 spid26s     Database 'model_msdb' running the upgrade step from version 956 to version 957.
+2023-12-18 20:27:52.13 spid45s     Attribute synchronization initialized
+2023-12-18 20:27:52.13 spid26s     Resource governor reconfiguration succeeded.
+2023-12-18 20:27:52.13 spid45s     Attribute synchronization manager initialized
+2023-12-18 20:27:52.13 spid26s     SQL Server Audit is starting the audits. This is an informational message. No user action is required.
+2023-12-18 20:27:52.14 spid26s     SQL Server Audit has started the audits. This is an informational message. No user action is required.
+2023-12-18 20:27:52.15 spid26s     XE session 'system_health' started.
+2023-12-18 20:27:52.59 spid26s     XE session 'telemetry_xevents' started.
+2023-12-18 20:27:52.82 spid26s     SQL Trace ID 1 was started by login "sa".
+2023-12-18 20:27:53.01 spid26s     Server name is 'sqlserver'. This is an informational message only. No user action is required.
+2023-12-18 20:27:53.03 spid29s     Clearing tempdb database.
+2023-12-18 20:27:53.03 spid72s     Always On: The availability replica manager is starting. This is an informational message only. No user action is required.
+2023-12-18 20:27:53.03 spid74s     [4]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:53.03 spid76s     [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:53.04 spid72s     Always On: The availability replica manager is waiting for the instance of SQL Server to allow client connections. This is an informational message only. No user action is required.
+2023-12-18 20:27:53.04 spid74s     Starting up database 'msdb'.
+2023-12-18 20:27:53.04 spid76s     Starting up database 'HlavnaDatabaza'.
+2023-12-18 20:27:53.05 spid76s     RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-12-18 20:27:53.05 spid76s     RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-12-18 20:27:53.26 spid27s     Using 'dbghelp.dll' version '4.0.5'
+2023-12-18 20:27:54.37 spid76s     Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 20:27:54.42 spid74s     1 transactions rolled forward in database 'msdb' (4:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:54.51 spid76s     46 transactions rolled forward in database 'HlavnaDatabaza' (5:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:54.64 spid76s     0 transactions rolled back in database 'HlavnaDatabaza' (5:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:54.64 spid76s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 20:27:54.65 spid76s     0 transactions rolled back in database 'msdb' (4:0). This is an informational message only. No user action is required.
+2023-12-18 20:27:55.68 spid29s     [2]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 20:27:55.68 spid29s     Starting up database 'tempdb'.
+2023-12-18 20:28:03.37 spid29s     The tempdb database has 8 data file(s).
+2023-12-18 20:28:03.41 spid72s     The Service Broker endpoint is in disabled or stopped state.
+2023-12-18 20:28:03.42 spid72s     The Database Mirroring endpoint is in disabled or stopped state.
+2023-12-18 20:28:03.45 spid72s     Service Broker manager has started.
+2023-12-18 20:28:03.45 spid26s     Recovery is complete. This is an informational message only. No user action is required.
+2023-12-18 20:32:33.86 spid54      XE session 'telemetry_xevents' stopping.
+2023-12-18 20:32:33.94 spid54      XE session 'telemetry_xevents' started.
+2023-12-18 20:33:00.26 spid54      Attempting to load library 'xplog70.dll' into memory. This is an informational message only. No user action is required.
+2023-12-18 20:33:00.29 spid54      Using 'xplog70.dll' version '2022.160.4085' to execute extended stored procedure 'xp_msver'. This is an informational message only; no user action is required.
+2023-12-18 20:41:28.19 spid54      XE session 'telemetry_xevents' stopping.
+2023-12-18 20:41:28.23 spid54      XE session 'telemetry_xevents' started.
+2023-12-18 21:27:32.65 spid13s     [DevOpsSnapshotTelemetryTask] Evaluating the background task.
+2023-12-18 21:41:32.10 spid51      XE session 'telemetry_xevents' stopping.
+2023-12-18 21:41:32.14 spid51      XE session 'telemetry_xevents' started.
+2023-12-18 22:22:44.59 spid52      Attempting to load library 'xpstar.dll' into memory. This is an informational message only. No user action is required.
+2023-12-18 22:22:44.62 spid52      Using 'xpstar.dll' version '2022.160.4085' to execute extended stored procedure 'xp_instance_regread'. This is an informational message only; no user action is required.
+2023-12-18 22:23:18.96 spid52      Setting database option SINGLE_USER to ON for database 'HlavnaDatabaza'.
+2023-12-18 22:23:28.59 Logon       Error: 18456, Severity: 14, State: 38.
+2023-12-18 22:23:28.59 Logon       Login failed for user 'sa'. Reason: Failed to open the explicitly specified database 'HlavnaDatabaza'. [CLIENT: 172.19.0.1]
+2023-12-18 22:23:32.17 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 22:23:32.17 spid52      Starting up database 'HlavnaDatabaza'.
+2023-12-18 22:23:32.18 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-12-18 22:23:32.18 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-12-18 22:23:32.93 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:23:33.30 spid52      Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:23:34.13 spid52      Setting database option READ_COMMITTED_SNAPSHOT to ON for database 'HlavnaDatabaza'.
+2023-12-18 22:23:34.86 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 22:23:34.86 spid52      Starting up database 'HlavnaDatabaza'.
+2023-12-18 22:23:34.86 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-12-18 22:23:34.87 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-12-18 22:23:35.66 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:23:36.14 spid16s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:33:39.43 spid52      Setting database option SINGLE_USER to ON for database 'HlavnaDatabaza'.
+2023-12-18 22:33:48.52 Logon       Error: 18456, Severity: 14, State: 38.
+2023-12-18 22:33:48.52 Logon       Login failed for user 'sa'. Reason: Failed to open the explicitly specified database 'HlavnaDatabaza'. [CLIENT: 172.19.0.1]
+2023-12-18 22:33:52.51 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 22:33:52.51 spid52      Starting up database 'HlavnaDatabaza'.
+2023-12-18 22:33:52.51 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-12-18 22:33:52.51 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-12-18 22:33:53.32 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:33:53.68 spid52      Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:33:55.17 spid52      Setting database option READ_COMMITTED_SNAPSHOT to ON for database 'HlavnaDatabaza'.
+2023-12-18 22:33:55.83 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-12-18 22:33:55.84 spid52      Starting up database 'HlavnaDatabaza'.
+2023-12-18 22:33:55.84 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-12-18 22:33:55.84 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-12-18 22:33:56.58 spid52      Parallel redo is started for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:33:57.00 spid33s     Parallel redo is shutdown for database 'HlavnaDatabaza' with worker pool size [4].
+2023-12-18 22:41:39.78 spid51      XE session 'telemetry_xevents' stopping.
+2023-12-18 22:41:39.84 spid51      XE session 'telemetry_xevents' started.
