@@ -12,6 +12,7 @@ using System.Reflection;
 using OSsemes.Areas.Identity.Data;
 using System.Runtime.CompilerServices;
 using Blazored.SessionStorage;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,8 +58,8 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
 builder.Services.AddScoped<Room>();
 builder.Services.AddScoped<Rezervation>();
 builder.Services.AddBlazoredSessionStorage();           //pre ukladanie dovtedy ked sa nezatvori prehliadac
- //najst nuget alebo uz funguje?                       //Blazored.LocalStorage  pre ukladanie aj po zavreti prehliadaca
-////////////////////////////////////////////////
+                                                        //najst nuget alebo uz funguje?                       //Blazored.LocalStorage  pre ukladanie aj po zavreti prehliadaca
+                                                        ////////////////////////////////////////////////
 
 
 var app = builder.Build();

@@ -7,17 +7,18 @@ namespace OSsemes.Data
     public class Rezervation
     {
         [Key]
-        public long Id { get; set; }
-        public int RoomNumber { get; set; }
+        public long Id { get; set; }                    //id rezervacie
+        //public int RoomNumber { get; set; }
         public DateTime ArrivalDate { get; set; }
         public DateTime DepartureDate { get; set; }
-        public int NumberGuest { get; set; }
+        public int NumberGuest { get; set; }            //počet hosti
+        public decimal CelkovaSuma { get; set; }        //celkova suma, ktora sa ma vypočitat pri vytvoreni rezervacie
 
         [Column(TypeName = "nvarchar(450)")]
         public string GuestId { get; set; }             //id Usera
 
         [ForeignKey("Room")]
-        public string IDroom { get; set; }                  //id miestnosti
+        public string RoomNumber { get; set; }                  //id miestnosti
 
         public IdentityUserOwn Guest { get; set; }
 

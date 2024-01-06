@@ -239,6 +239,9 @@ namespace OSsemes.Migrations
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("CelkovaSuma")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
@@ -246,21 +249,18 @@ namespace OSsemes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("IDroom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("NumberGuest")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GuestId");
 
-                    b.HasIndex("IDroom");
+                    b.HasIndex("RoomNumber");
 
                     b.ToTable("Rezervations");
                 });
@@ -342,7 +342,7 @@ namespace OSsemes.Migrations
 
                     b.HasOne("OSsemes.Data.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("IDroom")
+                        .HasForeignKey("RoomNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
