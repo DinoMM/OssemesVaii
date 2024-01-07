@@ -6,6 +6,15 @@
 @inject DataContext db
 @inject Room scopedRoom
 @inject Rezervation scopedRes
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<InfoModal @ref="chResMod" Text="Rezervácia bola úspešné zmenená.">
+</InfoModal>
+<ApproveModal @ref="deleteMod" Text="Naozaj chce odstrániť túto rezerváciu?"
+              Header="Odstániť"
+              FuncOnSucc="() => Vymaz(oznRezerv)"
+              FuncOnDiss="EventCallback.Empty">
+</ApproveModal>
 
 <header>
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
@@ -38,7 +47,7 @@
                     <td>@activeR.NumberGuest</td>
                     <td>
                         <button type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range"></i></button>
-                        <button type="button" @onclick="(() => Vymaz(activeR))"><i class="bi bi-calendar-x"></i></button>
+                        <button type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x"></i></button>
                     </td>
                 </tr>
             }
@@ -55,6 +64,9 @@ else
 
     private ClaimsPrincipal user;
     private string? userid;
+    private InfoModal chResMod;
+    private ApproveModal deleteMod;
+    private Rezervation oznRezerv;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,8 +76,20 @@ else
         if (!user.Identity.IsAuthenticated)     //ak neni nikto prihlaseny
         {
             navManager.NavigateTo("#");
+            return;
         }
+    }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (await sessionStorage.GetItemAsync<bool>("ResModified"))
+            {
+                await chResMod.OpenModal();
+                await sessionStorage.SetItemAsync("ResModified", false);
+            }
+        }
     }
 
     private bool MaRezervacie()
@@ -79,7 +103,7 @@ else
             }
             catch (InvalidOperationException e)
             {
-                return false;    
+                return false;
             }
         }
         return false;
@@ -94,20 +118,27 @@ else
             {
                 Console.WriteLine("Nemozno najst miestnost");
                 return;
-            } 
+            }
             active.Room = founded;
         }
-        
+
         scopedRes.setFromReservation(active);
         scopedRoom.setFromOtherRoom(new Room());
         navManager.NavigateTo("Accommodation/Reserve");
 
 
     }
+
+    private async void VymazAsync(Rezervation active)
+    {
+        oznRezerv = active;
+        await deleteMod.OpenModal();
+    }
     private void Vymaz(Rezervation active)
     {
         db.Remove(active);
         db.SaveChanges();
     }
+
 
 }

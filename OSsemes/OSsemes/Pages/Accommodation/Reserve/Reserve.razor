@@ -45,7 +45,7 @@
         <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" @onblur="calculateSum" class="form-control w-25" />
     </div>
 
-    <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") </h3>
+    <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") € </h3>
 
     <button type="submit" class="btn btn-primary m-3" @onclick="clearValMess">Objednať</button>
 </EditForm>
@@ -181,13 +181,11 @@
         newReservation.Room.setFromOtherRoom(editRoom);     //nastavenie povinnych parametrov
         foreach (var item in editRoom.RoomIds)
         {
-            if (db.Rezervations.Count() != 0)
+            if (db.Rezervations.Any(x => x.Room.RoomNumber == item &&
+            (newReservation.ArrivalDate < x.DepartureDate && x.ArrivalDate < newReservation.DepartureDate) &&
+            (scopedRes.Id == 0 ? true : scopedRes.Id == x.Id ? false : true)))
             {
-                if (db.Rezervations.FirstOrDefault(x => x.Room.RoomNumber == editRoom.RoomNumber &&
-                (newReservation.ArrivalDate < x.DepartureDate && x.ArrivalDate < newReservation.DepartureDate)) is not null)
-                {
-                    continue;
-                }
+                continue;
             }
             newReservation.RoomNumber = item;
             newReservation.Room.RoomNumber = item;
@@ -220,7 +218,8 @@
                     "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
                     "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
                     "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma;
+                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
+                    
                 }
                 else
                 {
@@ -229,7 +228,7 @@
                     "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
                     "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
                     "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma; 
+                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
                 }
                 await ulozZmenyMod.OpenModal();       //zobrazi potvrdenie ci chceme pokracovat
             }
@@ -266,6 +265,7 @@
                     scopedRes.setFromReservation(new Rezervation());
                     db.Rezervations.First(x => x.Id == newReservation.Id).setFromReservation(newReservation);
                     await db.SaveChangesAsync();            //ulozenie stavu
+                    await sessionStorage.SetItemAsync("ResModified", true);
                     navManager.NavigateTo("MyReservations");
                     return;
                 }
