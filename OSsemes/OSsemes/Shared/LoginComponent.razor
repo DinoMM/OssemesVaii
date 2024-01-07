@@ -18,7 +18,7 @@
                 </li>
                 <li>
                     <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
-                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odhlásiť </a>
                     </NavLink>
                 </li>
             </ul>
@@ -36,13 +36,13 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                 <li class="dropdown-item txt-color-own">Prihlásený: @db.Users.Where(x => x.UserName == context.User.Identity.Name).First().Surname</li>
                 <li>
-                    <NavLink class="dropdown-item" href="" Match="NavLinkMatch.All">
+                    <NavLink class="dropdown-item" href="ManageReservations" Match="NavLinkMatch.All">
                         <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Správa Rezervácii </a>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
-                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odhlásiť </a>
                     </NavLink>
                 </li>
             </ul>
@@ -71,7 +71,7 @@
                 </li>
                 <li>
                     <NavLink class="dropdown-item" href="Identity/Account/Logout" Match="NavLinkMatch.All">
-                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odlásiť </a>
+                        <a class="nav-link txt-color-own txt-font-own txt-hover-bold">Odhlásiť </a>
                     </NavLink>
                 </li>
             </ul>

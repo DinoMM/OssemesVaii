@@ -10,7 +10,7 @@
 
 <InfoModal @ref="chResMod" Text="Rezervácia bola úspešné zmenená.">
 </InfoModal>
-<ApproveModal @ref="deleteMod" Text="Naozaj chce odstrániť túto rezerváciu?"
+<ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť túto rezerváciu?"
               Header="Odstániť"
               FuncOnSucc="() => Vymaz(oznRezerv)"
               FuncOnDiss="EventCallback.Empty">
@@ -28,16 +28,16 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Cislo Rezervacie</th>
-                <th scope="col">Datum prichodu</th>
-                <th scope="col">Datum odchodu</th>
-                <th scope="col">Cislo izby</th>
-                <th scope="col">Pocet osob</th>
+                <th scope="col">Číslo rezervácie</th>
+                <th scope="col">Dátum príchodu</th>
+                <th scope="col">Dátum odchodu</th>
+                <th scope="col">Číslo izby</th>
+                <th scope="col">Počet osôb</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var activeR in db.Rezervations.Where(x => x.GuestId == userid))
+            @foreach (var activeR in db.Rezervations.Include(r => r.Room).Where(x => x.GuestId == userid))
             {
                 <tr>
                     <th scope="row">@activeR.Id</th>
@@ -97,39 +97,19 @@ else
         userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
         if (userid is not null)
         {
-            try
-            {
-                return db.Rezervations.First(x => x.GuestId == userid && x.DepartureDate >= DateTime.Now) != null; //ak existuje zaznam, ktory ma datum odchodu vacsirovny ako terajsi datum(uz je po ubytovani)
-            }
-            catch (InvalidOperationException e)
-            {
-                return false;
-            }
+            return db.Rezervations.FirstOrDefault(x => x.GuestId == userid && x.DepartureDate >= DateTime.Now) != null; //ak existuje zaznam, ktory ma datum odchodu vacsirovny ako terajsi datum(uz je po ubytovani)
         }
         return false;
     }
 
-    private void Zmen(Rezervation active)
+    private void Zmen(Rezervation active) 
     {
-        if (active.Room is null && !string.IsNullOrEmpty(active.RoomNumber))
-        {
-            Room? founded = db.HRooms.FirstOrDefault(x => x.RoomNumber == active.RoomNumber);
-            if (founded is null)
-            {
-                Console.WriteLine("Nemozno najst miestnost");
-                return;
-            }
-            active.Room = founded;
-        }
-
         scopedRes.setFromReservation(active);
         scopedRoom.setFromOtherRoom(new Room());
         navManager.NavigateTo("Accommodation/Reserve");
-
-
     }
 
-    private async void VymazAsync(Rezervation active)
+    private async void VymazAsync(Rezervation active) //otvori sa modal s potvrdenim
     {
         oznRezerv = active;
         await deleteMod.OpenModal();

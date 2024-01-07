@@ -197,57 +197,63 @@
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
             return;
         }
-
-
         //uspesny input a je volna miestnost, zavadzaju sa zmeny
-        var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera - kontrola prihlaseneho
         if (userid is not null)
         {
-            var IdenUser = db.Users.First(x => x.Id == userid); //mozno vymazat
-            if (IdenUser is not null)
+            calculateSum();
+            if (totalSum != 0)
             {
-                calculateSum();
-                if (totalSum != 0)
-                {
-                    newReservation.CelkovaSuma = (decimal)totalSum;
-                }
-                if (string.IsNullOrEmpty(scopedRoom.RoomCategory))
-                {
-                    sumarize = "Chcete si zmeniť tento termín na nový?<br>" +
-                    "Číslo izby: " + newReservation.RoomNumber + "<br>" +
-                    "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
-                    "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
-                    "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
-                    
-                }
-                else
-                {
-                    sumarize = "Chcete si zarezervovať tento termín?<br>" +
-                    "Číslo izby: " + newReservation.RoomNumber + "<br>" +
-                    "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
-                    "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
-                    "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                    "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
-                }
-                await ulozZmenyMod.OpenModal();       //zobrazi potvrdenie ci chceme pokracovat
+                newReservation.CelkovaSuma = (decimal)totalSum;
             }
-
+            if (string.IsNullOrEmpty(scopedRoom.RoomCategory))
+            {
+                sumarize = "Chcete si zmeniť tento termín na nový?<br>" +
+                "Číslo izby: " + newReservation.RoomNumber + "<br>" +
+                "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
+                "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
+                "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
+                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
+            }
+            else
+            {
+                sumarize = "Chcete si zarezervovať tento termín?<br>" +
+                "Číslo izby: " + newReservation.RoomNumber + "<br>" +
+                "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
+                "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
+                "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
+                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
+            }
+            await ulozZmenyMod.OpenModal();       //zobrazi potvrdenie ci chceme pokracovat
         }
         else
         {
-            //ak neni prihlaseny pouzivatel tak sa ho presmeruje na registraciu
-            //await sessionStorage.SetItemAsync("ResOK_NoLoggin", true);          //nastavenie lokalneho ulozenia
-            //scopedRes.setFromReservation(rezervacia);                   //ulozenie aktualnej rezervacie            await infoMod.OpenModal();
             await infoMod.OpenModal();
         }
-
     }
 
     private async Task SaveChanges()
     {
-        var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        String? userid;
+        if (user.IsInRole("Reception"))     //ak je prihlaseny recepcny tak nech sa pouzije ID z rezervacie (recepcny nemoze vytvarat rezervacie na ludi)
+        {
+            if (scopedRes is not null)
+            {
+                userid = scopedRes.GuestId;    //ziska sa ID aktualne prihlaseneho usera
+            }
+            else
+            {
+                Console.WriteLine("Chyba pri prihlasenom recepcnom.");
+                return;
+            }
+        }
+        else
+        {
+            userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera
+        }
+
         var IdenUser = db.Users.First(x => x.Id == userid); //ziska sa hodnota z databazy, ktora je interne prepojena
+
         if (IdenUser is not null && userid is not null)
         {
             scopedRoom.setFromOtherRoom(new Room());        //vycistenie
@@ -266,13 +272,20 @@
                     db.Rezervations.First(x => x.Id == newReservation.Id).setFromReservation(newReservation);
                     await db.SaveChangesAsync();            //ulozenie stavu
                     await sessionStorage.SetItemAsync("ResModified", true);
-                    navManager.NavigateTo("MyReservations");
+                    navManager.NavigateTo(user.IsInRole("Reception") ? "ManageReservations" : "MyReservations");
                     return;
                 }
-                db.Rezervations.Add(newReservation);        //pridanie rezervacie
-                await db.SaveChangesAsync();            //ulozenie stavu
-                await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
-                navManager.NavigateTo("#");
+                if (!user.IsInRole("Reception"))        //recepcny nesmie vytvarat rezervacie len manit
+                {
+                    db.Rezervations.Add(newReservation);        //pridanie rezervacie
+                    await db.SaveChangesAsync();            //ulozenie stavu
+                    await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
+                    navManager.NavigateTo("#");
+                }
+                else
+                {
+                    Console.WriteLine("Recepcny nesmie vytvarat rezervacie");
+                }
             }
         }
     }
