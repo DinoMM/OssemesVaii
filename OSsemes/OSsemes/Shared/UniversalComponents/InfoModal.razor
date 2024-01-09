@@ -1,10 +1,5 @@
 ﻿@inject IJSRuntime JSRuntime
 
-<!-- Button trigger modal -->
-@* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button> *@
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -13,7 +8,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">@Header</h5>
                 @* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalTextLabel">
                 @((MarkupString)Text)
             </div>
             <div class="modal-footer">
@@ -39,5 +34,4 @@
     {
         await JSRuntime.InvokeVoidAsync("eval", "$('#exampleModalInfo').modal('show');");
     }
-  
 }

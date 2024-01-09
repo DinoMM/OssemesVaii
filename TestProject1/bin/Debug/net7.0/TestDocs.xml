@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestProject1</name>
+    </assembly>
+    <members>
+        <member name="T:Components.UniversalComponents.TApproveModal">
+            <summary>
+            Testy pre komponent ApproveModal
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TApproveModal.Test_Header1">
+            <summary>
+            1.Vytvorenie komponentu, Správne pridelenenie do Header
+            2.Nájdenie Header labela z komponentu
+            3.Porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TApproveModal.Test_Header2">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Menenie vypisovanej hodnoty a porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TApproveModal.Test_Text1">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Menenie vypisovanej hodnoty a porovnanie správnej hodnoty.
+              Ošetrenie spravného vypísaného stringu aj s html značkami
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TApproveModal.Test_OnClickAno">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Kliknutie na button Áno
+            3.Overenie spustenia funkcie na kliknutie
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TApproveModal.Test_OnClickNie">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Kliknutie na button Nie
+            3.Overenie spustenia funkcie na kliknutie
+            </summary>
+        </member>
+        <member name="T:Components.UniversalComponents.TFastFormModal">
+            <summary>
+            Testy pre komponent FastFormModal
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Header1">
+            <summary>
+            1.Vytvorenie komponentu, Správne pridelenenie do Header
+            2.Nájdenie Header labela z komponentu
+            3.Porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Header2">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Menenie vypisovanej hodnoty a porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_OnClickPoslat">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Kliknutie na button OK
+            3.Overenie spustenia funkcie na kliknutie
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Inputs1">
+            <summary>
+            1.Vytvorenie komponentu, pridanie poľa s typami inputov, ich názvy sú ROZDIELNE
+            2.Overenie nájdených labelov a inputov so správnym id a typom, použité sú:
+                - string
+                - number
+                - textarea
+                - bool
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Inputs2">
+            <summary>
+            1.Vytvorenie komponentu, pridanie poľa s typami inputov, ich názvy sú ROVNAKĚ
+            2.Overenie nájdených labelov a inputov so správnym id a typom, použité sú:
+                - string
+                - number
+                - textarea
+                - bool
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Inputs3">
+            <summary>
+            1.Vytvorenie komponentu, pridanie poľa s typami inputov, ich názvy sú PRAZDNY string
+            2.Overenie nájdených labelov a inputov so správnym id a typom, použité sú:
+                - string
+                - number
+                - textarea
+                - bool
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TFastFormModal.Test_Inputs4">
+            <summary>
+            1.Vytvorenie komponentu, pridanie poľa s typami inputov, Názvy rôzne a zlé typy, ošetrenie prázdnej funkcie
+            2.Overenie nájdených labelov a inputov so správnym id a typom, použité sú:
+                - string
+                - number
+                - textarea
+                - bool
+            </summary>
+        </member>
+        <member name="T:Components.UniversalComponents.TInfoModal">
+            <summary>
+            Testy pre komponent InfoModal
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TInfoModal.Test_Header1">
+            <summary>
+            1.Vytvorenie komponentu, Správne pridelenenie do Header
+            2.Nájdenie Header labela z komponentu
+            3.Porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TInfoModal.Test_Header2">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Menenie vypisovanej hodnoty a porovnanie správnej hodnoty
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TInfoModal.Test_Text1">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Menenie vypisovanej hodnoty a porovnanie správnej hodnoty.
+              Ošetrenie spravného vypísaného stringu aj s html značkami
+            </summary>
+        </member>
+        <member name="M:Components.UniversalComponents.TInfoModal.Test_OnClickOK">
+            <summary>
+            1.Vytvorenie komponentu
+            2.Kliknutie na button OK
+            3.Overenie spustenia funkcie na kliknutie
+            </summary>
+        </member>
+    </members>
+</doc>

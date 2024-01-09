@@ -5,7 +5,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@Header</h5>
+                <h5 class="modal-title" id="exampleHModalLabel">@Header</h5>
                 @* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
             </div>
             <div class="modal-body">
@@ -16,31 +16,32 @@
                         {
                             case "number":
                                 <div class="mb-3">
-                                    <label class="col-form-label">@item.Item1</label>
-                                    <input type="number" class="form-control" @onchange="(e) => func(e,item)">
+                                    <label class="col-form-label" id=@("labelnumber" + Inputs.IndexOf(item)) >@item.Item1</label>
+                                    <input type="number" class="form-control" id=@("inputnumber" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)">
                                 </div>
                                 break;
                             case "string":
                                 <div class="mb-3">
-                                    <label class="col-form-label">@item.Item1</label>
-                                    <input type="text" class="form-control" @onchange="(e) => func(e,item)">
+                                    <label class="col-form-label" id=@("labelstring" + Inputs.IndexOf(item))>@item.Item1</label>
+                                    <input type="text" class="form-control" id=@("inputstring" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)">
                                 </div>
                                 break;
                             case "textArea":
                                 <div class="mb-3">
-                                    <label class="col-form-label">@item.Item1</label>
-                                    <textarea class="form-control" @onchange="(e) => func(e,item)"></textarea>
+                                    <label class="col-form-label" id=@("labeltextarea" + Inputs.IndexOf(item))>@item.Item1</label>
+                                    <textarea class="form-control" id=@("inputtextarea" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)"></textarea>
                                 </div>
                                 break;
                             case "bool":
                                 <div class="mb-3">
-                                    <label class="col-form-label">@item.Item1</label>
-                                    <input type="checkbox" class="form-control" @onchange="(e) => func(e,item)">
+                                    <label class="col-form-label" id=@("labelbool" + Inputs.IndexOf(item))>@item.Item1</label>
+                                    <input type="checkbox" class="form-control" id=@("inputbool" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)">
                                 </div>
                                 break;
                             default:
+                                @(FuncOnSucc = EventCallback.Empty)
                                 <div class="mb-3">
-                                    <label class="col-form-label">
+                                    <label class="col-form-label" id=@("labelerror" + Inputs.IndexOf(item))>
                                         Chyba pri @("<" + item.Item1 + " " + item.Item2 + ">")
                                     </label>
                                 </div>
@@ -93,7 +94,8 @@
                     case "bool":
                         Outputs.Add(false);
                         break;
-                    default: Console.WriteLine("Chyba pri vkladani do FastFormModal. Chybova hodnota: <" + item.Item1 + "," + item.Item2 + ">"); break;
+                    default:
+                        Console.WriteLine("Chyba pri vkladani do FastFormModal. Chybova hodnota: <" + item.Item1 + "," + item.Item2 + ">"); break;
                 }
             }
         }
@@ -127,7 +129,8 @@
                 case "bool":
                     Outputs[Inputs.IndexOf(item)] = Convert.ToBoolean(e.Value.ToString());
                     break;
-                default: Console.WriteLine("Chyba pri vkladani do FastFormModal"); break;
+                default: 
+                Console.WriteLine("Chyba pri vkladani do FastFormModal"); break;
             }
         }
     }
