@@ -1,0 +1,137 @@
+﻿@page "/ManageCoupons"
+@using OSsemes.Data.Database;
+@using System.Security.Claims;
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+<InfoModal @ref="infoMod" Text="@infoModText">
+</InfoModal>
+<ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť túto rezerváciu?"
+              Header="Odstániť"
+              FuncOnSucc="() => Vymaz(oznCoupon)"
+              FuncOnDiss="EventCallback.Empty">
+</ApproveModal>
+<FastFormModal @ref="couponFormMod"
+               Header="Vytvorenie Kupónov"
+               FuncOnSucc="CreateCoupons"
+               Inputs=@(new List<(string, string)>() { ("Názov", "string"), ("Zľava%", "number"), ("Popis", "textArea"), ("Počet", "number")})>
+</FastFormModal>
+
+<header>
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">Všetky kupóny</h1>
+        <p class="fs-5 text-body-secondary"></p>
+    </div>
+</header>
+
+<div class="ps-5">
+    <button @onclick="runGenerator"><i class="btn btn-success bi bi-file-plus-fill"></i></button>
+</div>
+
+<div class="overflow-scroll" style="max-height: 18rem; min-height: 5rem">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Číslo kupónu</th>
+                <th scope="col">Použitie</th>
+                <th scope="col">Zľava %</th>
+                <th scope="col">Použitý</th>
+                <th scope="col">Popis</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activeC in db.Coupons)
+            {
+                <tr>
+                    <th scope="row">@activeC.ID</th>
+                    <td>@activeC.NameService</td>
+                    <td>@activeC.Discount</td>
+                    <td>@(activeC.IsUsed ? "Áno" : "Nie")</td>
+                    <td>@activeC.Description</td>
+                    <td>
+                        <button type="button" @onclick="(() => VymazAsync(activeC))"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private ClaimsPrincipal user;
+    private ApproveModal deleteMod;
+    private Coupon oznCoupon;
+    private FastFormModal couponFormMod;
+
+    private InfoModal infoMod;
+    private string infoModText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+
+        if (!user.Identity.IsAuthenticated || user.IsInRole("Guest"))     //ak neni nikto prihlaseny
+        {
+            navManager.NavigateTo("#");
+            return;
+        }
+    }
+
+    private bool MaKupony()
+    {
+        return db.Coupons.FirstOrDefault() != null; //ak existuje zaznam, ktory ma datum odchodu vacsirovny ako terajsi datum(uz je po ubytovani)
+    }
+
+    private async void VymazAsync(Coupon active)       //otvori sa modal s potvrdenim
+    {
+        oznCoupon = active;
+        await deleteMod.OpenModal();
+    }
+    private void Vymaz(Coupon active)
+    {
+        db.Remove(active);
+        db.SaveChanges();
+    }
+    private async void runGenerator()
+    {
+        await couponFormMod.OpenModal();   
+    }
+
+    private async void CreateCoupons()
+    {
+        //prevod na pomocne premenne
+        string name = (string)couponFormMod.Outputs[0];
+        int discount = Convert.ToInt32(couponFormMod.Outputs[1]);
+        string descrb = (string)couponFormMod.Outputs[2];
+        int replic = Convert.ToInt32(couponFormMod.Outputs[3]);
+        //Overenie vstupov
+        if (discount <= 0 || discount > 100)      //zla zlava od 0-100
+        {
+            infoModText = "Zľava musí byť v rozmedzi od 1 - 100 %. Generovanie neprebehlo";
+            StateHasChanged();
+            await infoMod.OpenModal();
+            return;
+        }
+        if (replic <= 0)     //pocet generovanych menej ako 0, pozor na velke cisla
+        {
+            infoModText = "Počet generovaných kupónov musí byť vačší ako 0. Generovanie neprebehlo";
+            StateHasChanged();
+            await infoMod.OpenModal();
+            return;
+        }
+        //Generovanie
+        for (int i = 0; i < replic; ++i)
+        {
+            Coupon newCoupon = new Coupon() { NameService = name, Discount = discount, Description = descrb };
+            newCoupon.ID = Coupon.GetUniID(db);
+            db.Coupons.Add(newCoupon);
+        }
+        db.SaveChanges();
+    }
+
+}

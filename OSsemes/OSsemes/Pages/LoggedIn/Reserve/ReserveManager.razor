@@ -9,7 +9,7 @@
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
-<InfoModal @ref="chResMod" Text="Rezervácia bola úspešné zmenená.">
+<InfoModal @ref="chResMod" Text="@infoModText">
 </InfoModal>
 <ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť túto rezerváciu?"
               Header="Odstániť"
@@ -26,43 +26,51 @@
 
 @if (MaRezervacie())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Číslo rezervácie</th>
-                <th scope="col">Email hosťa</th>
-                <th scope="col">Meno hosťa</th>
-                <th scope="col">Dátum príchodu</th>
-                <th scope="col">Dátum odchodu</th>
-                <th scope="col">Číslo izby</th>
-                <th scope="col">Počet osôb</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var activeR in db.Rezervations.Include(r => r.Guest).Include(r => r.Room).Where(x => x.DepartureDate >= DateTime.Now))
-        {
+    <div class="overflow-scroll" style="max-height: 18rem; min-height: 5rem">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th scope="row">@activeR.Id</th>
-                    <td>@activeR.Guest.Email</td>
-                    <td>@(activeR.Guest.Surname + " " + activeR.Guest.Name)</td>
-                    <td>@activeR.ArrivalDate.ToString("dd.MM.yyyy")</td>
-                    <td>@activeR.DepartureDate.ToString("dd.MM.yyyy")</td>
-                    <td>@activeR.RoomNumber</td>
-                    <td>@activeR.NumberGuest</td>
-                    <td>
-                        <button type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range"></i></button>
-                        <button type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x"></i></button>
-                    </td>
+                    <th scope="col">Číslo rezervácie</th>
+                    <th scope="col">Email hosťa</th>
+                    <th scope="col">Meno hosťa</th>
+                    <th scope="col">Dátum príchodu</th>
+                    <th scope="col">Dátum odchodu</th>
+                    <th scope="col">Číslo izby</th>
+                    <th scope="col">Počet osôb</th>
+                    <th scope="col">Suma k zaplateniu</th>
+                    <th scope="col"></th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var activeR in db.Rezervations.Include(r => r.Guest).Include(r => r.Room).Include(c => c.Coupon).Where(x => x.DepartureDate >= DateTime.Now))
+                {
+                    <tr>
+                        <th scope="row">@activeR.Id</th>
+                        <td>@activeR.Guest.Email</td>
+                        <td>@(activeR.Guest.Surname + " " + activeR.Guest.Name)</td>
+                        <td>@activeR.ArrivalDate.ToString("dd.MM.yyyy")</td>
+                        <td>@activeR.DepartureDate.ToString("dd.MM.yyyy")</td>
+                        <td>@activeR.RoomNumber</td>
+                        <td>@activeR.NumberGuest</td>
+                        <td>@activeR.CelkovaSuma</td>
+                        <td>
+                            <button type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range"></i></button>
+                            <button type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x"></i></button>
+                        </td>
+                    </tr>
+                }
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
-    <strong>Žiadne aktívne rezervácie</strong>
+    <div class="position-relative" style="min-height:7rem">
+        <div class="position-absolute  top-50  start-50 translate-middle ">
+            <strong>Žiadne aktívne rezervácie</strong>
+        </div>
+    </div>
 }
 
 @code {
@@ -73,6 +81,8 @@ else
     private InfoModal chResMod;
     private ApproveModal deleteMod;
     private Rezervation oznRezerv;
+
+    private string infoModText = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,6 +102,7 @@ else
         {
             if (await sessionStorage.GetItemAsync<bool>("ResModified"))
             {
+                infoModText = "Rezervácia bola úspešné zmenená.";
                 await chResMod.OpenModal();
                 await sessionStorage.SetItemAsync("ResModified", false);
             }
@@ -116,8 +127,12 @@ else
         oznRezerv = active;
         await deleteMod.OpenModal();
     }
-    private void Vymaz(Rezervation active)      
+    private void Vymaz(Rezervation active)
     {
+        if (active.Coupon is not null) //ak mame kupon tak ho znova aktivujeme pre dalsie pouzitie
+        {
+            active.Coupon.IsUsed = false;
+        }
         db.Remove(active);
         db.SaveChanges();
     }

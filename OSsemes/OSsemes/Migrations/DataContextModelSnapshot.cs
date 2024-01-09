@@ -228,6 +228,31 @@ namespace OSsemes.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("OSsemes.Data.Coupon", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameService")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Coupons");
+                });
+
             modelBuilder.Entity("OSsemes.Data.Rezervation", b =>
                 {
                     b.Property<long>("Id")
@@ -241,6 +266,9 @@ namespace OSsemes.Migrations
 
                     b.Property<decimal>("CelkovaSuma")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
@@ -257,6 +285,8 @@ namespace OSsemes.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
 
                     b.HasIndex("GuestId");
 
@@ -338,6 +368,10 @@ namespace OSsemes.Migrations
 
             modelBuilder.Entity("OSsemes.Data.Rezervation", b =>
                 {
+                    b.HasOne("OSsemes.Data.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId");
+
                     b.HasOne("OSsemes.Areas.Identity.Data.IdentityUserOwn", "Guest")
                         .WithMany()
                         .HasForeignKey("GuestId")
@@ -349,6 +383,8 @@ namespace OSsemes.Migrations
                         .HasForeignKey("RoomNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Coupon");
 
                     b.Navigation("Guest");
 

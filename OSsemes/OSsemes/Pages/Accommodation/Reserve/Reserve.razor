@@ -45,6 +45,14 @@
         <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" @onblur="calculateSum" class="form-control w-25" />
     </div>
 
+    @if (scopedRes is not null && string.IsNullOrEmpty(scopedRes.CouponId)) //pri modifikacii sa kupon pouzit neda len ten co bol uz pouzity
+    {
+        <div class="form-group ms-3">
+            <label for="DepartureDate">Zľavový kupón</label>
+            <InputText id="DiscountCoupon" @bind-Value="model.DiscountCoupon" class="form-control w-25" />
+        </div>
+    }
+
     <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") € </h3>
 
     <button type="submit" class="btn btn-primary m-3" @onclick="clearValMess">Objednať</button>
@@ -62,6 +70,7 @@
     private ValidationMessageStore validationMessageStore;
     private double totalSum = 0.0;
     Rezervation newReservation;
+    Coupon? foundedCoupon = null;
 
     private InfoModal infoMod;
     private ApproveModal ulozZmenyMod;
@@ -160,6 +169,12 @@
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
             return;
         }
+        if (!string.IsNullOrEmpty(model.DiscountCoupon) && model.DiscountCoupon.Length != Coupon.NUM_CHARS)   //ak uzivatel zadal kupon a tento kupon nema tolko znakov kolko mame nastavenych tak rovno vyhodime error
+        {
+            validationMessageStore.Add(editContext.Field(nameof(FormRegi.DiscountCoupon)), "Zadaný kupón sa nenašiel, vyčistite pole pre pokračovanie");    //vlastny error
+            editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
+            return;
+        }
         //vytvorenie rezervacie pre jednoduchost
         newReservation = new Rezervation()      //vytvori rezervaciu
             {
@@ -197,6 +212,26 @@
             editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
             return;
         }
+        //kontrola existencie kupónu
+        foundedCoupon = null;
+        if (!string.IsNullOrEmpty(model.DiscountCoupon))        //pred tym uz bol skontrolovany pocet cislic
+        {
+            foundedCoupon = db.Coupons.FirstOrDefault(x => x.ID == model.DiscountCoupon && !x.IsUsed);
+            if (foundedCoupon is null)
+            {
+                validationMessageStore.Add(editContext.Field(nameof(FormRegi.DiscountCoupon)), "Zadaný kupón sa nenašiel, vyčistite pole pre pokračovanie");    //vlastny error
+                editContext.NotifyValidationStateChanged();     //vizualna aktualizacia
+                return;
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(scopedRes.CouponId) && scopedRes.Coupon is not null)  //ak modifikujeme tak sa pouzije uz pouzity kupon
+            {
+                foundedCoupon = scopedRes.Coupon;
+            }
+        }
+
         //uspesny input a je volna miestnost, zavadzaju sa zmeny
         var userid = user.FindFirstValue(ClaimTypes.NameIdentifier);    //ziska sa ID aktualne prihlaseneho usera - kontrola prihlaseneho
         if (userid is not null)
@@ -204,7 +239,11 @@
             calculateSum();
             if (totalSum != 0)
             {
-                newReservation.CelkovaSuma = (decimal)totalSum;
+                newReservation.CelkovaSuma = foundedCoupon is null ? (decimal)totalSum : (decimal)((100 - foundedCoupon.Discount) * totalSum / 100);        //pouzitie sumy na zaklade toho ci bol najdeny kupon
+            }
+            else
+            {
+                return;
             }
             if (string.IsNullOrEmpty(scopedRoom.RoomCategory))
             {
@@ -213,7 +252,8 @@
                 "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
                 "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
                 "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
+                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€" +
+                (foundedCoupon is null ? "" : "<br>Použitý kupón so zľavou " + foundedCoupon.Discount + "%");
             }
             else
             {
@@ -222,7 +262,8 @@
                 "Dátum príchodu: " + newReservation.ArrivalDate.ToString("dd.MM.yyyy") + "<br>" +
                 "Dátum odchodu: " + newReservation.DepartureDate.ToString("dd.MM.yyyy") + "<br>" +
                 "Pre počet osôb: " + newReservation.NumberGuest + "<br>" +
-                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€";
+                "Celková suma k zaplateniu pri príchode: " + newReservation.CelkovaSuma + "€" +
+                (foundedCoupon is null ? "" : "<br>Použitý kupón so zľavou " + foundedCoupon.Discount + "%");
             }
             await ulozZmenyMod.OpenModal();       //zobrazi potvrdenie ci chceme pokracovat
         }
@@ -263,8 +304,14 @@
             Room? prislusnaRoom = db.HRooms.FirstOrDefault(room => room.RoomNumber == newReservation.RoomNumber); //ziska sa hodnota z databazy, ktora je interne prepojena
             if (prislusnaRoom != null)
             {
+                if (foundedCoupon is not null)      //ak mame kupon tak zaznacime ze sme ho pouzili
+                {
+                    foundedCoupon.IsUsed = true;
+                }
                 newReservation.Room = prislusnaRoom;            //nemazat
                 newReservation.RoomNumber = prislusnaRoom.RoomNumber;
+                newReservation.Coupon = foundedCoupon;
+                newReservation.CouponId = foundedCoupon?.ID ?? null;
                 if (scopedRes.Id != 0 && userid == scopedRes.GuestId)       //modifikacia
                 {
                     newReservation.Id = scopedRes.Id;
@@ -275,17 +322,15 @@
                     navManager.NavigateTo(user.IsInRole("Reception") ? "ManageReservations" : "MyReservations");
                     return;
                 }
-                if (!user.IsInRole("Reception"))        //recepcny nesmie vytvarat rezervacie len manit
-                {
-                    db.Rezervations.Add(newReservation);        //pridanie rezervacie
-                    await db.SaveChangesAsync();            //ulozenie stavu
-                    await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
-                    navManager.NavigateTo("#");
-                }
-                else
+                if (user.IsInRole("Reception"))        //recepcny nesmie vytvarat rezervacie len manit
                 {
                     Console.WriteLine("Recepcny nesmie vytvarat rezervacie");
+                    return;
                 }
+                db.Rezervations.Add(newReservation);        //pridanie rezervacie
+                await db.SaveChangesAsync();            //ulozenie stavu
+                await sessionStorage.SetItemAsync("ResCreated", true);          //nastavenie ze sa uspesne vytvorila rezervacia
+                navManager.NavigateTo("#");
             }
         }
     }
@@ -312,5 +357,9 @@
         [Required]
         [DataType(DataType.Date, ErrorMessage = "Chybne zadaný dátum odchodu")]
         public DateTime? DepartureDate { get; set; } = DateTime.Now.AddDays(1);
+
+        [DataType(DataType.Text)]
+        [MaxLength(10)]
+        public string DiscountCoupon { get; set; } = "";
     }
 }

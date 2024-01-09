@@ -1,0 +1,96 @@
+﻿@page "/Settings"
+@using OSsemes.Areas.Identity.Data;
+@using OSsemes.Data.Database;
+@using System.Security.Claims;
+@using OSsemes.Pages.LoggedIn.UserSettings.Menu
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+<div class="d-flex">
+    <div class="d-flex flex-column flex-shrink-0 p-3 shadow " style="width: 13rem;">
+        <a href="/Settings" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">Profil</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="javascript:void(0);" class="nav-link link-dark @menuPick[0]" @onclick="() => changePick(0)" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16"></svg>
+                    Informácie
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="nav-link link-dark @menuPick[1]" @onclick="() => changePick(1)">
+                    <svg class="bi me-2" width="16" height="16"></svg>
+                    Zmena hesla
+                </a>
+            </li>
+            <li>
+                <a class="nav-link link-dark">
+                    <svg class="bi me-2" width="16" height="16"></svg>
+
+                </a>
+            </li>
+
+        </ul>
+        <hr>
+    </div>
+    <div class="d-flex flex-column flex-shrink-0 p-3  w-100">
+        @switch (getActive())
+        {
+            case 0:
+                <div>
+                    <Info></Info>
+                </div>
+                break;
+            case 1:
+                <div>
+                    <ChangePassword loggedIn="user"></ChangePassword>
+                </div>
+                break;
+        }
+    </div>
+</div>
+
+
+@code {
+    private ClaimsPrincipal user;
+    private string[] menuPick = { "active", "" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;          //ziskanie aktualneho prihlaseneho pouzivatela
+
+        if (!user.Identity?.IsAuthenticated ?? true)     //ak neni nikto prihlaseny
+        {
+            navManager.NavigateTo("#");
+            return;
+        }
+    }
+
+    private void changePick(int pick)
+    {
+        for (int i = 0; i < menuPick.Length; ++i)
+        {
+            menuPick[i] = "";
+        }
+        menuPick[pick] = "active";
+    }
+
+    private int getActive()
+    {
+        for (int i = 0; i < menuPick.Length; ++i)
+        {
+            if (menuPick[i] == "active")
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+}

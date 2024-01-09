@@ -20,9 +20,13 @@ namespace OSsemes.Data
         [ForeignKey("Room")]
         public string RoomNumber { get; set; }                  //id miestnosti
 
+        public string? CouponId { get; set; }
+
         public IdentityUserOwn Guest { get; set; }
 
         public Room Room { get; set; }
+
+        public Coupon? Coupon { get; set; }
 
 
         //public void setToDef()

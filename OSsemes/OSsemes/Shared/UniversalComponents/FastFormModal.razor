@@ -1,0 +1,134 @@
+﻿@using System.Collections.Specialized
+@inject IJSRuntime JSRuntime
+
+<div class="modal fade" id="exampleModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@Header</h5>
+                @* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+            </div>
+            <div class="modal-body">
+                <form>
+                    @foreach (var item in Inputs)
+                    {
+                        switch (item.Item2)
+                        {
+                            case "number":
+                                <div class="mb-3">
+                                    <label class="col-form-label">@item.Item1</label>
+                                    <input type="number" class="form-control" @onchange="(e) => func(e,item)">
+                                </div>
+                                break;
+                            case "string":
+                                <div class="mb-3">
+                                    <label class="col-form-label">@item.Item1</label>
+                                    <input type="text" class="form-control" @onchange="(e) => func(e,item)">
+                                </div>
+                                break;
+                            case "textArea":
+                                <div class="mb-3">
+                                    <label class="col-form-label">@item.Item1</label>
+                                    <textarea class="form-control" @onchange="(e) => func(e,item)"></textarea>
+                                </div>
+                                break;
+                            case "bool":
+                                <div class="mb-3">
+                                    <label class="col-form-label">@item.Item1</label>
+                                    <input type="checkbox" class="form-control" @onchange="(e) => func(e,item)">
+                                </div>
+                                break;
+                            default:
+                                <div class="mb-3">
+                                    <label class="col-form-label">
+                                        Chyba pri @("<" + item.Item1 + " " + item.Item2 + ">")
+                                    </label>
+                                </div>
+                                break;
+                        }
+                    }
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavrieť</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="FuncOnSucc">Poslať</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Header { get; set; } = "Formular";
+
+    private List<(string, string)> _inputs;
+    /// <summary>
+    /// @(new List<(string, string)>() { ("Nazov1", "string"), ("Nazov2", "string")}) ||
+    /// Item1 - Nazov, ktory sa zobrazi ||
+    /// Item2 - Typ, ktory ma byt input ("number", "string", "textArea", "bool") ||
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public List<(string, string)> Inputs
+    {
+        get
+        {
+            return _inputs;
+        }
+        set
+        {
+            _inputs = value;
+            foreach (var item in _inputs)       //generovanie vnutra Outputs
+            {
+                switch (item.Item2)
+                {
+                    case "number":
+                        Outputs.Add(0.0);
+                        break;
+                    case "string":
+                    case "textArea":
+                        Outputs.Add(String.Empty);
+                        break;
+                    case "bool":
+                        Outputs.Add(false);
+                        break;
+                    default: Console.WriteLine("Chyba pri vkladani do FastFormModal. Chybova hodnota: <" + item.Item1 + "," + item.Item2 + ">"); break;
+                }
+            }
+        }
+    }      //string - nazov, string - datatyp("string", "int" ...)
+    /// <summary>
+    /// Vysledok z formularov, ktory treba skontrolovat, nevkladat nic do neho lebo sa automaticky generuje
+    /// </summary>
+    public List<object> Outputs { get; private set; } = new List<object>();               // list, ktoreho pvky budu pozostavat z poradia vlozenych prvkov v Inputs ako vysledok vstupu od pouzivatela, nesmie byt meneny z vonku
+    [Parameter]
+    [EditorRequired]
+    public EventCallback FuncOnSucc { get; set; }
+
+    public async Task OpenModal()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "$('#exampleModalForm').modal('show');");
+    }
+
+    private void func(ChangeEventArgs e, (string, string) item)
+    {
+        if (e.Value is not null)
+        {
+            switch (Inputs[Inputs.IndexOf(item)].Item2)
+            {
+                case "number":
+                    Outputs[Inputs.IndexOf(item)] = Convert.ToDouble(e.Value.ToString());
+                    break;
+                case "string":
+                case "textArea":
+                    Outputs[Inputs.IndexOf(item)] = e.Value.ToString() ?? "";
+                    break;
+                case "bool":
+                    Outputs[Inputs.IndexOf(item)] = Convert.ToBoolean(e.Value.ToString());
+                    break;
+                default: Console.WriteLine("Chyba pri vkladani do FastFormModal"); break;
+            }
+        }
+    }
+}

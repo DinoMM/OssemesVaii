@@ -6,7 +6,7 @@
 </button> *@
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,7 +37,7 @@
 
     public async Task OpenModal()
     {
-        await JSRuntime.InvokeVoidAsync("eval", "$('#exampleModal').modal('show');");
+        await JSRuntime.InvokeVoidAsync("eval", "$('#exampleModalInfo').modal('show');");
     }
   
 }

@@ -41,7 +41,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     //await _signInManager.SignInAsync(identity, isPersistent: false);        // nastavi cookies
-                    await _userManager.AddToRoleAsync(identity, "Reception");                 //nastavi default rolu
+                    await _userManager.AddToRoleAsync(identity, "Guest");                 //nastavi default rolu
                     return LocalRedirect(ReturnUrl);
                 }
 

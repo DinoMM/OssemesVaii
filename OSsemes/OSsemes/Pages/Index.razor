@@ -7,15 +7,23 @@
 
 <InfoModal @ref="infoReg" Text="Rezervácia prebehla úspešne. Ďakujeme." />
 @* <ApproveModal @ref="mod" Text="Chces pokracovat?" FuncOnSucc="succes" FuncOnDiss="EventCallback.Empty"/> *@
+@* <FastFormModal @ref="fFormMod"
+               FuncOnSucc="Succ"
+               Inputs="@(new List<(string, string)>() { ("Nazov1", "string"), ("Nazov2", "string")})">
+</FastFormModal> *@
+
 <PageTitle>Hotel X</PageTitle>
 
 <OSsemes.Pages.MainPage.Carousel />
+
+
 
 <OSsemes.Pages.MainPage.Content />
 
 
 @code {
     private InfoModal infoReg;
+    private FastFormModal fFormMod;
     //     private ApproveModal mod;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -27,8 +35,15 @@
                 await infoReg.OpenModal();
                 await sessionStorage.SetItemAsync("ResCreated", false);
             }
+            // await fFormMod.OpenModal();
         }
     }
+
+    // public void Succ()
+    // {
+    //     Console.WriteLine("Uspesne dostane " + fFormMod.Outputs[0] + " " + fFormMod.Outputs[1]);
+
+    // }
 
 
     // private void succes()
@@ -39,7 +54,7 @@
     // private void notsuc()
     // {
     //     Console.WriteLine("NEUSPECHHH");
-        // }
+    // }
 
 
 
