@@ -120,7 +120,15 @@
             switch (Inputs[Inputs.IndexOf(item)].Item2)
             {
                 case "number":
-                    Outputs[Inputs.IndexOf(item)] = Convert.ToDouble(e.Value.ToString());
+                    double outD;
+                    if (Double.TryParse(e.Value.ToString(), out outD))
+                    {
+                        Outputs[Inputs.IndexOf(item)] = outD;
+                    }
+                    else
+                    {
+                        Outputs[Inputs.IndexOf(item)] = 0;
+                    }
                     break;
                 case "string":
                 case "textArea":

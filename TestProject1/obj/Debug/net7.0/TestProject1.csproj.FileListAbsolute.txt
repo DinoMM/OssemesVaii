@@ -173,3 +173,7 @@ D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\TestDocs.xml
 D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\Castle.Core.dll
 D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\Moq.dll
 D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.InMemory.dll
+D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\selenium-manager\linux\selenium-manager
+D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\selenium-manager\macos\selenium-manager
+D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\selenium-manager\windows\selenium-manager.exe
+D:\Danko\projects\OssemesVaii\TestProject1\bin\Debug\net7.0\WebDriver.dll

@@ -160,6 +160,10 @@
               "target": "Package",
               "version": "[4.20.70, )"
             },
+            "Selenium.WebDriver": {
+              "target": "Package",
+              "version": "[4.16.2, )"
+            },
             "bunit": {
               "target": "Package",
               "version": "[1.26.64, )"
