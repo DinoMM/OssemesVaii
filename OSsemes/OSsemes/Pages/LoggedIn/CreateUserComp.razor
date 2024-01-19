@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using OSsemes.Areas.Identity.Data;
+@inject UserManager<IdentityUserOwn> userManager
+
+@code {
+    public bool Created { get; set; }
+
+    public async Task CreateUser(IdentityUserOwn newUser, string pass, string role)
+    {
+        var result = await userManager.CreateAsync(newUser, pass);
+        if (!result.Succeeded)
+        {
+            Created = false;
+        }
+        await userManager.AddToRoleAsync(newUser, role);
+        Created = true;
+    }
+}

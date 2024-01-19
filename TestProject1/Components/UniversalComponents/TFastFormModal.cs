@@ -93,7 +93,7 @@ namespace Components.UniversalComponents
             var jsRuntimeMock = new Mock<IJSRuntime>();     //inject pre funkcnost javascriptu
             Services.AddSingleton(jsRuntimeMock.Object);
 
-            List<(string, string)> insertedList = new List<(string, string)>() { ("Nazov1", "string"), ("Nazov2", "number"), ("Nazov3", "textArea"), ("Nazov4", "bool") };
+            List<(string, string)> insertedList = new List<(string, string)>() { ("Nazov1", "string"), ("Nazov2", "number"), ("Nazov3", "textArea"), ("Nazov4", "bool"), ("Nazov5", "email") };
             var cut = RenderComponent<FastFormModal>(p => p.Add(p => p.Inputs, insertedList));
             Assert.NotNull(cut);
             
@@ -119,6 +119,11 @@ namespace Components.UniversalComponents
                         buildIdLabel = "labeltextarea" + insertedList.IndexOf(item);
                         buildIdInput = "inputtextarea" + insertedList.IndexOf(item);
                         buildInputType = "textarea";
+                        break;
+                    case "email":
+                        buildIdLabel = "labelemail" + insertedList.IndexOf(item);
+                        buildIdInput = "inputemail" + insertedList.IndexOf(item);
+                        buildInputType = "email";
                         break;
                     case "bool":
                         buildIdLabel = "labelbool" + insertedList.IndexOf(item);

@@ -9,6 +9,7 @@
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
+
 <InfoModal @ref="chResMod" Text="@infoModText">
 </InfoModal>
 <ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť túto rezerváciu?"
@@ -26,8 +27,10 @@
 
 @if (MaRezervacie())
 {
+    <input type="text" class="mb-2" id="searchTerm" onkeyup="search()" placeholder="Hľadať" />
+
     <div class="overflow-scroll" style="max-height: 18rem; min-height: 5rem">
-        <table class="table">
+        <table class="table" id="tableRes">
             <thead>
                 <tr>
                     <th scope="col">Číslo rezervácie</th>
@@ -42,10 +45,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var activeR in db.Rezervations.Include(r => r.Guest).Include(r => r.Room).Include(c => c.Coupon).Where(x => x.DepartureDate >= DateTime.Now))
+                @foreach (var activeR in user.IsInRole("Reception") ? db.Rezervations.Include(r => r.Guest).Include(r => r.Room).Include(c => c.Coupon).Where(x => x.DepartureDate >= DateTime.Now.AddDays(1)).OrderBy(x => x.ArrivalDate) : db.Rezervations.Include(r => r.Guest).Include(r => r.Room).Include(c => c.Coupon).OrderBy(x => x.ArrivalDate))
                 {
                     <tr>
-                        <th scope="row">@activeR.Id</th>
+                        <td scope="row">@activeR.Id</td>
                         <td>@activeR.Guest.Email</td>
                         <td>@(activeR.Guest.Surname + " " + activeR.Guest.Name)</td>
                         <td>@activeR.ArrivalDate.ToString("dd.MM.yyyy")</td>
@@ -54,15 +57,53 @@
                         <td>@activeR.NumberGuest</td>
                         <td>@activeR.CelkovaSuma</td>
                         <td>
-                            <button type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range"></i></button>
-                            <button type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x"></i></button>
+                            <a type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range btn btn-sm btn-secondary"></i></a>
+                            <a type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x btn btn-sm btn-danger"></i></a>
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>
+
+    <script>
+        function search() {
+            var input, filter, table, tr, td0, td1, td2, i, txtValue;
+            input = document.getElementById("searchTerm"); // ziskanie zadanej hodnoty 
+            filter = input.value;
+            table = document.getElementById("tableRes"); // ziskanie tabulky 
+            tr = table.getElementsByTagName("tr"); // ziskanie hodnot v tabulke 
+
+            for (i = 0; i < tr.length; i++) {
+                td0 = tr[i].getElementsByTagName("td")[0]; // ziskanie hodnot v riadku 
+                td1 = tr[i].getElementsByTagName("td")[1];
+                td2 = tr[i].getElementsByTagName("td")[2];
+                if (td0 && td1 && td2) {
+                    txtValue = td0.textContent || td0.innerText; // kontrola 1 hodnoty 
+                    if (txtValue.indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        continue;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                    txtValue = td1.textContent || td1.innerText; // kontrola 2 hodnoty 
+                    if (txtValue.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                        tr[i].style.display = "";
+                        continue;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                    txtValue = td2.textContent || td2.innerText; // kontrola 3 hodnoty 
+                    if (txtValue.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                        tr[i].style.display = "";
+                        continue;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 }
 else
 {

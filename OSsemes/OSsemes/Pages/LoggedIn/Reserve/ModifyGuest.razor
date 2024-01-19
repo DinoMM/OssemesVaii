@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var activeR in db.Rezervations.Include(g => g.Guest).Include(r => r.Room).Include(c => c.Coupon).Where(x => x.GuestId == userid))
+                @foreach (var activeR in db.Rezervations.Include(g => g.Guest).Include(r => r.Room).Include(c => c.Coupon).Where(x => x.GuestId == userid && x.DepartureDate >= DateTime.Now.AddDays(1)))
                 {
                     <tr>
                         <th scope="row">@activeR.Id</th>
@@ -49,12 +49,11 @@
                         <td>@activeR.NumberGuest</td>
                         <td>@activeR.CelkovaSuma</td>
                         <td>
-                            <button type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range"></i></button>
-                            <button type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x"></i></button>
+                            <a type="button" @onclick="(() => Zmen(activeR))"><i class="bi bi-calendar-range btn btn-sm btn-secondary"></i></a>
+                            <a type="button" @onclick="(() => VymazAsync(activeR))"><i class="bi bi-calendar-x btn btn-danger"></i></a>
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>
@@ -116,7 +115,7 @@ else
 
     private async void Zmen(Rezervation active)
     {
-        if (active.ArrivalDate >= DateTime.Now.AddDays(1))      //ak je den pred prichodom
+        if (active.ArrivalDate >= DateTime.Now.AddDays(1))      //ak je viac ako den pred prichodom
         {
             scopedRes.setFromReservation(active);
             scopedRoom.setFromOtherRoom(new Room());

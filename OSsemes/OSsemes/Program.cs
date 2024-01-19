@@ -13,6 +13,7 @@ using OSsemes.Areas.Identity.Data;
 using System.Runtime.CompilerServices;
 using Blazored.SessionStorage;
 using Microsoft.Extensions.Configuration;
+using OSsemes.Pages.LoggedIn;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,10 +60,48 @@ builder.Services.AddScoped<Room>();
 builder.Services.AddScoped<Rezervation>();
 builder.Services.AddBlazoredSessionStorage();           //pre ukladanie dovtedy ked sa nezatvori prehliadac
                                                         //najst nuget alebo uz funguje?                       //Blazored.LocalStorage  pre ukladanie aj po zavreti prehliadaca
-                                                        ////////////////////////////////////////////////
+////////////////////////////////////////////////
 
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())      //vytvorenie zakladnych uctov
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUserOwn>>();
+    if (dbContext is not null && userManager is not null) {
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Admin") is null) {
+            var identity = new IdentityUserOwn { UserName = "admin@gmail.com", Name = "Admin", Surname = "Admin", Email = "admin@gmail.com" };
+            var result = await userManager.CreateAsync(identity, "Heslo123");
+            await userManager.AddToRoleAsync(identity, "Admin");
+            if (!result.Succeeded) {
+                Console.WriteLine("Chyba pri vytvarani admina!");
+            }
+        }
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Reception") is null)
+        {
+            var identity = new IdentityUserOwn { UserName = "reception@gmail.com", Name = "Reception", Surname = "Reception", Email = "reception@gmail.com" };
+            var result = await userManager.CreateAsync(identity, "Heslo123");
+            await userManager.AddToRoleAsync(identity, "Reception");                 
+            if (!result.Succeeded)
+            {
+                Console.WriteLine("Chyba pri vytvarani recepcneho!");
+            }
+        }
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Guest") is null)
+        {
+            var identity = new IdentityUserOwn { UserName = "guest@gmail.com", Name = "Guest", Surname = "Guest", Email = "guest@gmail.com" };
+            var result = await userManager.CreateAsync(identity, "Heslo123");
+            await userManager.AddToRoleAsync(identity, "Guest");
+            if (!result.Succeeded)
+            {
+                Console.WriteLine("Chyba pri vytvarani hosta!");
+            }
+        }
+    }
+
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

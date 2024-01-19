@@ -32,6 +32,12 @@
                                     <textarea class="form-control" id=@("inputtextarea" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)"></textarea>
                                 </div>
                                 break;
+                            case "email":
+                                <div class="mb-3">
+                                    <label class="col-form-label" id=@("labelemail" + Inputs.IndexOf(item))>@item.Item1</label>
+                                    <input type="email" class="form-control" id=@("inputemail" + Inputs.IndexOf(item)) @onchange="(e) => func(e,item)">
+                                </div>
+                                break;
                             case "bool":
                                 <div class="mb-3">
                                     <label class="col-form-label" id=@("labelbool" + Inputs.IndexOf(item))>@item.Item1</label>
@@ -52,7 +58,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavrieť</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="FuncOnSucc">Poslať</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="FuncOnSucc" >Poslať</button>
             </div>
         </div>
     </div>
@@ -90,6 +96,9 @@
                     case "string":
                     case "textArea":
                         Outputs.Add(String.Empty);
+                        break;
+                    case "email":
+                        Outputs.Add("@");
                         break;
                     case "bool":
                         Outputs.Add(false);
@@ -132,6 +141,7 @@
                     break;
                 case "string":
                 case "textArea":
+                case "email":
                     Outputs[Inputs.IndexOf(item)] = e.Value.ToString() ?? "";
                     break;
                 case "bool":

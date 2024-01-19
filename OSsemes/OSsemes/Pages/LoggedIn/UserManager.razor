@@ -1,0 +1,194 @@
+﻿@page "/UserManager"
+@using Microsoft.AspNetCore.Identity;
+@using OSsemes.Areas.Identity.Data;
+@using OSsemes.Data.Database;
+@using System.Security.Claims;
+@using System.Text.RegularExpressions;
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+@inject UserManager<IdentityUserOwn> userManager
+
+
+<InfoModal @ref="usrInfoMod" Text="@usrInfoModText">
+</InfoModal>
+<ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť tohto používateľa?"
+              Header="Odstániť"
+              FuncOnSucc="() => Vymaz(oznUsr)"
+              FuncOnDiss="EventCallback.Empty">
+</ApproveModal>
+<FastFormModal @ref="userFormMod"
+               Header="Vytvoriť uživateľa"
+               FuncOnSucc="CreateUsr"
+               Inputs=@(new List<(string, string)>() { ("Meno", "string"), ("Priezvisko", "string"), ("Email", "email"),("Heslo", "string"), ("Rola", "string")})>
+</FastFormModal>
+<CreateUserComp @ref="createU"></CreateUserComp>
+
+<header>
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">Všetci používatelia</h1>
+        <p class="fs-5 text-body-secondary"></p>
+    </div>
+</header>
+
+<div class="ps-5 mb-2">
+    <a @onclick="runUserCreator">Pridať použivateľa <i class="btn btn-success bi bi-person-fill-add"></i></a>
+</div>
+
+<input type="text" class="mb-2" id="searchTerm" onkeyup="search()" placeholder="Hľadať" />
+
+<div class="overflow-scroll" style="max-height: 18rem; min-height: 5rem">
+    <table class="table" id="tableUziv">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activeU in varUsrList)
+            {
+                <tr>
+                    <td scope="row">@(activeU.Surname + " " + activeU.Name)</td>
+                    <td>@activeU.Email</td>
+                    <td>
+                        <a type="button" @onclick="(() => VymazAsync(activeU))"><i class="bi bi-calendar-x btn btn-sm btn-danger"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function search() {
+        var input, filter, table, tr, td0, td1, i, txtValue;
+        input = document.getElementById("searchTerm"); // ziskanie zadanej hodnoty
+        filter = input.value;
+        table = document.getElementById("tableUziv"); // ziskanie tabulky
+        tr = table.getElementsByTagName("tr"); // ziskanie hodnot v tabulke
+
+        for (i = 0; i < tr.length; i++) {
+            td0 = tr[i].getElementsByTagName("td")[0]; // ziskanie hodnot v riadku
+            td1 = tr[i].getElementsByTagName("td")[1];
+            if (td0 && td1) {
+                txtValue = td0.textContent || td0.innerText; // kontrola 1 hodnoty
+                if (txtValue.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                    tr[i].style.display = "";
+                    continue;
+                } else {
+                    tr[i].style.display = "none";
+                }
+                txtValue = td1.textContent || td1.innerText; // kontrola 2 hodnoty
+                if (txtValue.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                    tr[i].style.display = "";
+                    continue;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+
+@code {
+    private ClaimsPrincipal user;
+    private ApproveModal deleteMod;
+    private IdentityUserOwn oznUsr;
+    private FastFormModal userFormMod;
+    private InfoModal usrInfoMod;
+    private string usrInfoModText;
+    private CreateUserComp createU;
+    private List<IdentityUserOwn> varUsrList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+
+        if (!user.Identity.IsAuthenticated || !user.IsInRole("Admin"))     //ak neni nikto prihlaseny
+        {
+            navManager.NavigateTo("#");
+            return;
+        }
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        varUsrList = db.Users.OrderBy(x => x.Email).ToList();
+    }
+
+    private async void VymazAsync(IdentityUserOwn user)       //otvori sa modal s potvrdenim
+    {
+        oznUsr = user;
+        await deleteMod.OpenModal();
+    }
+
+    private void Vymaz(IdentityUserOwn user)
+    {
+        db.Remove(user);
+        varUsrList.Remove(user);
+        db.SaveChanges();
+    }
+
+    private async void runUserCreator()
+    {
+        await userFormMod.OpenModal();
+    }
+
+    private async void CreateUsr()
+    {
+        //prevod na pomocne premenne
+        var name = (string)userFormMod.Outputs[0];
+        var sur = (string)userFormMod.Outputs[1];
+        var email = (string)userFormMod.Outputs[2];
+        var pass = (string)userFormMod.Outputs[3];
+        var role = (string)userFormMod.Outputs[4];
+        // Console.WriteLine(name);
+        // Console.WriteLine(sur);
+        // Console.WriteLine(email);
+        // Console.WriteLine(pass);
+        // Console.WriteLine(role);
+        //Overenie vstupov
+        if (!Regex.IsMatch(pass, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"))
+        {
+            usrInfoModText = "Zadané heslo nie je podľa normy, účet nebol vytvorený";
+            StateHasChanged();
+            await usrInfoMod.OpenModal();
+            return;
+        }
+        // if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\\.[^@]+$"))
+        // {
+        //     usrInfoModText = "Zadaný email nie je podľa normy, účet nebol vytvorený";
+        //     StateHasChanged();
+        //     await usrInfoMod.OpenModal();
+        //     return;
+        // }
+        if (role != "Guest" && role != "Reception" && role != "Admin")
+        {
+            usrInfoModText = "Zle zadaná rola.";
+            StateHasChanged();
+            await usrInfoMod.OpenModal();
+            return;
+        }
+        //doplnit overenie ostatnych vstupov ak treba
+        //kontrola existencie
+        if (db.Users.FirstOrDefault(x => x.Email == email) is not null)
+        {
+            usrInfoModText = "Použivateľ už existuje";
+            StateHasChanged();
+            await usrInfoMod.OpenModal();
+            return;
+        }
+        //vytvorenie uzivatela
+        var identity = new IdentityUserOwn { UserName = email, Name = name, Surname = sur, Email = email };
+        await createU.CreateUser(identity, pass, role);
+        usrInfoModText = "Použivateľ bol vytvorený";
+        createU.Created = false;
+        StateHasChanged();
+        await usrInfoMod.OpenModal();
+        Console.WriteLine("konec");
+    }
+}
