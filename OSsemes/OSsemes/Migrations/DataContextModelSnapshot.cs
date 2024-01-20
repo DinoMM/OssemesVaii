@@ -253,6 +253,37 @@ namespace OSsemes.Migrations
                     b.ToTable("Coupons");
                 });
 
+            modelBuilder.Entity("OSsemes.Data.HEvent", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"));
+
+                    b.Property<DateTime?>("DateEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("OSsemes.Data.Rezervation", b =>
                 {
                     b.Property<long>("Id")
@@ -313,6 +344,29 @@ namespace OSsemes.Migrations
                     b.HasKey("RoomNumber");
 
                     b.ToTable("HRooms");
+                });
+
+            modelBuilder.Entity("OSsemes.Data.UserHEvent", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"));
+
+                    b.Property<long>("HEventID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HEventID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserHEvents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -389,6 +443,23 @@ namespace OSsemes.Migrations
                     b.Navigation("Guest");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("OSsemes.Data.UserHEvent", b =>
+                {
+                    b.HasOne("OSsemes.Data.HEvent", "HEvent")
+                        .WithMany()
+                        .HasForeignKey("HEventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OSsemes.Areas.Identity.Data.IdentityUserOwn", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("HEvent");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,3 @@
-using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +17,11 @@ namespace OSsemes.Areas.Identity.Pages.Account
 
         private readonly SignInManager<IdentityUserOwn> _signInManager;
         private readonly UserManager<IdentityUserOwn> _userManager;
-       
 
-        public RegisterModel(SignInManager<IdentityUserOwn> signInManager, UserManager<IdentityUserOwn> userManager)
+
+
+        public RegisterModel(SignInManager<IdentityUserOwn> signInManager,
+            UserManager<IdentityUserOwn> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

@@ -23,41 +23,52 @@
               FuncOnDiss="EventCallback.Empty">
 
 </ApproveModal>
-<h3>Reserve: @scopedRoom.RoomCategory</h3>
-
-<EditForm EditContext="editContext" OnValidSubmit="ValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-
-    <div class="form-group ms-3">
-        <label for="NumPeople">Počet osôb</label>
-        <InputNumber id="NumPeople" @bind-Value="model.NumPeople" class="form-control w-25" />
-    </div>
-
-    <div class="form-group ms-3">
-        <label for="ArrivalDate">Dátum príchodu</label>
-        <InputDate id="ArrivalDate" @bind-Value="model.ArrivalDate" @onblur="calculateSum" class="form-control w-25" />
-    </div>
-
-    <div class="form-group ms-3">
-        <label for="DepartureDate">Dátum odchodu</label>
-        <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" @onblur="calculateSum" class="form-control w-25" />
-    </div>
-
-    @if (scopedRes is not null && string.IsNullOrEmpty(scopedRes.CouponId)) //pri modifikacii sa kupon pouzit neda len ten co bol uz pouzity
+<h3 class="d-flex justify-content-center">
+    Rezervácia: 
+    @if (scopedRoom.RoomCategory == "Izba ApaDelux")
     {
-        <div class="form-group ms-3">
-            <label for="DepartureDate">Zľavový kupón</label>
-            <InputText id="DiscountCoupon" @bind-Value="model.DiscountCoupon" class="form-control w-25" />
-        </div>
+        @(" " + "Izba Aparman Deluxe")
     }
+    else
+    {
+        @scopedRoom.RoomCategory
+    }
+</h3>
 
-    <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") € </h3>
+<div class="d-flex justify-content-center">
+    <EditForm EditContext="editContext" OnValidSubmit="ValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <button type="submit" class="btn btn-primary m-3" @onclick="clearValMess">Objednať</button>
-</EditForm>
 
+        <div class="form-group ms-3">
+            <label for="NumPeople">Počet osôb</label>
+            <InputNumber id="NumPeople" @bind-Value="model.NumPeople" class="form-control w-25" />
+        </div>
+
+        <div class="form-group ms-3">
+            <label for="ArrivalDate">Dátum príchodu</label>
+            <InputDate id="ArrivalDate" @bind-Value="model.ArrivalDate" @onblur="calculateSum" class="form-control w-50" />
+        </div>
+
+        <div class="form-group ms-3">
+            <label for="DepartureDate">Dátum odchodu</label>
+            <InputDate id="DepartureDate" @bind-Value="model.DepartureDate" @onblur="calculateSum" class="form-control w-50" />
+        </div>
+
+        @if (scopedRes is not null && string.IsNullOrEmpty(scopedRes.CouponId)) //pri modifikacii sa kupon pouzit neda len ten co bol uz pouzity
+        {
+            <div class="form-group ms-3">
+                <label for="DepartureDate">Zľavový kupón</label>
+                <InputText id="DiscountCoupon" @bind-Value="model.DiscountCoupon" class="form-control w-50" />
+            </div>
+        }
+
+        <h3 class="ms-3">Cena za ubytovanie: @totalSum.ToString("F2") € </h3>
+
+        <button type="submit" class="btn btn-primary m-3" @onclick="clearValMess">Pokračovat v rezervovaní</button>
+    </EditForm>
+</div>
 
 
 
@@ -183,11 +194,18 @@
                 DepartureDate = model.DepartureDate.Value.Date,
                 Room = new Room()
             };
-        switch (editRoom.RoomCategory)
+        switch (editRoom.RoomCategory)      //ziskanie aktualnych informacii
         {
             case "Izba Deluxe":
                 editRoom = RoomDeluxe.GetRoomInfo();
                 break;
+            case "Izba Apartman":
+                editRoom = RoomApart.GetRoomInfo();
+                break;
+            case "Izba ApaDelux":
+                editRoom = RoomApartDelux.GetRoomInfo();
+                break;
+
 
             default: Console.WriteLine("Kategoria izby nebola najdena v Reserve"); break;
         }

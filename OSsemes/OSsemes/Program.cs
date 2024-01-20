@@ -60,36 +60,51 @@ builder.Services.AddScoped<Room>();
 builder.Services.AddScoped<Rezervation>();
 builder.Services.AddBlazoredSessionStorage();           //pre ukladanie dovtedy ked sa nezatvori prehliadac
                                                         //najst nuget alebo uz funguje?                       //Blazored.LocalStorage  pre ukladanie aj po zavreti prehliadaca
-////////////////////////////////////////////////
+                                                        ////////////////////////////////////////////////
 
 
 var app = builder.Build();
 
-
+////pridavanie potrebnych zánamov do db ak sa nenájdu
 using (var scope = app.Services.CreateScope())      //vytvorenie zakladnych uctov
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUserOwn>>();
-    if (dbContext is not null && userManager is not null) {
-        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Admin") is null) {
+    if (dbContext is not null && userManager is not null)
+    {
+        RolesData.SeedRoles(app.Services).Wait();       //pridanie roli do systemu
+
+        if (dbContext.HRooms.Count() == 0)        //prida zaznamy ak je tabulka prazdna
+        {
+            dbContext.HRooms.Add(new Room() { RoomNumber = "101", RoomCategory = "Izba Deluxe", MaxNumberOfGuest = 3, Cost = 100.00 });
+            dbContext.HRooms.Add(new Room() { RoomNumber = "102", RoomCategory = "Izba Deluxe", MaxNumberOfGuest = 3, Cost = 100.00 });
+            dbContext.HRooms.Add(new Room() { RoomNumber = "201", RoomCategory = "Izba Apartman", MaxNumberOfGuest = 3, Cost = 150.00 });
+            dbContext.HRooms.Add(new Room() { RoomNumber = "202", RoomCategory = "Izba Apartman", MaxNumberOfGuest = 3, Cost = 150.00 });
+            dbContext.HRooms.Add(new Room() { RoomNumber = "301", RoomCategory = "Izba ApaDelux", MaxNumberOfGuest = 6, Cost = 210.00 });
+            dbContext.HRooms.Add(new Room() { RoomNumber = "302", RoomCategory = "Izba ApaDelux", MaxNumberOfGuest = 6, Cost = 210.00 });
+        }
+
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "admin@gmail.com") is null)
+        {
             var identity = new IdentityUserOwn { UserName = "admin@gmail.com", Name = "Admin", Surname = "Admin", Email = "admin@gmail.com" };
             var result = await userManager.CreateAsync(identity, "Heslo123");
             await userManager.AddToRoleAsync(identity, "Admin");
-            if (!result.Succeeded) {
+            if (!result.Succeeded)
+            {
                 Console.WriteLine("Chyba pri vytvarani admina!");
             }
         }
-        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Reception") is null)
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "reception@gmail.com") is null)
         {
             var identity = new IdentityUserOwn { UserName = "reception@gmail.com", Name = "Reception", Surname = "Reception", Email = "reception@gmail.com" };
             var result = await userManager.CreateAsync(identity, "Heslo123");
-            await userManager.AddToRoleAsync(identity, "Reception");                 
+            await userManager.AddToRoleAsync(identity, "Reception");
             if (!result.Succeeded)
             {
                 Console.WriteLine("Chyba pri vytvarani recepcneho!");
             }
         }
-        if (dbContext.Users.FirstOrDefault(x => x.UserName == "Guest") is null)
+        if (dbContext.Users.FirstOrDefault(x => x.UserName == "guest@gmail.com") is null)
         {
             var identity = new IdentityUserOwn { UserName = "guest@gmail.com", Name = "Guest", Surname = "Guest", Email = "guest@gmail.com" };
             var result = await userManager.CreateAsync(identity, "Heslo123");
@@ -99,9 +114,11 @@ using (var scope = app.Services.CreateScope())      //vytvorenie zakladnych ucto
                 Console.WriteLine("Chyba pri vytvarani hosta!");
             }
         }
+        await dbContext.SaveChangesAsync();
     }
 
 }
+//////////////////////////
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -123,9 +140,6 @@ app.UseRouting();
 
 app.UseAuthentication();        //povolenie autentifikacie a autorizacie
 app.UseAuthorization();
-
-RolesData.SeedRoles(app.Services).Wait();       //pridanie roli do systemu
-
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

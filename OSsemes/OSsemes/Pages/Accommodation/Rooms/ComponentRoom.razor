@@ -63,7 +63,16 @@
 <!-- ---------------------Header--------------------------- -->
 <header>
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-        <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">@ModeledRoom.RoomNumber</h1>
+        <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">
+            @if (ModeledRoom.RoomCategory == "Izba ApaDelux")
+            {
+                <div>Izba Aparman Deluxe </div>
+            } else
+            {
+                @ModeledRoom.RoomCategory
+            }
+        </h1>
+
         <p class="fs-5 text-body-secondary"></p>
     </div>
 </header>

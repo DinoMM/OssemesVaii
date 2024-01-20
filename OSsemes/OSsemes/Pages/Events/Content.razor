@@ -1,6 +1,142 @@
 ﻿@page "/Events"
-<h3>Content</h3>
+@using OSsemes.Areas.Identity.Data;
+@using OSsemes.Data.Database;
+@using System.Security.Claims;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+<!-- --- -->
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">Podujatia a akcie</h1>
+    <p class="fs-5 text-body-secondary">
+        Z našej ponuky podujatí Vám žiadna akcia neunikne! Zobrazujú sa hlavné podujatia nie len v hoteli ale aj z okolia.
+    </p>
+</div>
+<!-- --- -->
+
+<section class="light background-own-white">
+    <div class="container py-2">
+
+        @foreach (var evnt in zoznamPodujati)
+        {
+            if (fancy)
+            {
+                <article class="postcard background-own-blue ">
+                    <a class="postcard__img_link">
+                        <img class="postcard__img" src="@evnt.ImagePath" alt="Image Title" />
+                    </a>
+                    <div class="postcard__text t-light">
+                        <h1 class="postcard__title"><a>@evnt.Title</a></h1>
+                        <AuthorizeView>
+                            <Authorized>
+                                @if (!CheckJoin(evnt))
+                                {
+                                    <div class="text-black">
+                                        Zúčastním sa <a href="javascript:void(0)" @onclick="() => JoinEvent(evnt)"><i class="bi bi-square-fill"></i></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-success">
+                                        Odhlásiť sa <a href="javascript:void(0)" @onclick="() => LeaveEvent(evnt)"><i class="bi bi-check-square-fill"></i></a>
+                                    </div>
+                                }
+                            </Authorized>
+                        </AuthorizeView>
+                        <div class="postcard__subtitle small">
+                            @(evnt.DateStart.ToString("dd.MM.yyyy HH:mm") + evnt.DateEnd?.ToString(" - dd.MM.yyyy HH:mm"))
+                        </div>
+                        <div class="postcard__preview-txt">@evnt.Description</div>
+                    </div>
+                </article>
+            }
+            else
+            {
+                <article class="postcard light">
+                    <a class="postcard__img_link">
+                        <img class="postcard__img" src="@evnt.ImagePath" alt="Image Title" />
+                    </a>
+                    <div class="postcard__text t-dark">
+                        <h1 class="postcard__title"><a>@evnt.Title</a></h1>
+                        <AuthorizeView>
+                            <Authorized>
+                                @if (!CheckJoin(evnt))
+                                {
+                                    <div class="text-black">
+                                        Zúčastním sa <a href="javascript:void(0)" @onclick="() => JoinEvent(evnt)"><i class="bi bi-square-fill"></i></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-success">
+                                        Odhlásiť sa <a href="javascript:void(0)" @onclick="() => LeaveEvent(evnt)"><i class="bi bi-check-square-fill"></i></a>
+                                    </div>
+                                }
+                            </Authorized>
+                        </AuthorizeView>
+                        <div class="postcard__subtitle small">
+                            @(evnt.DateStart.ToString("dd.MM.yyyy HH:mm") + evnt.DateEnd?.ToString(" - dd.MM.yyyy HH:mm"))
+                        </div>
+                        <div class="postcard__preview-txt">@evnt.Description</div>
+                    </div>
+                </article>
+
+            }
+            fancy = !fancy;
+        }
+    </div>
+</section>
+
 
 @code {
+    private List<HEvent> zoznamPodujati = new();
+    private bool fancy = false;
+    private ClaimsPrincipal user;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+    }
+
+    protected override void OnInitialized()
+    {
+        zoznamPodujati.AddRange(db.Events.Where(x =>
+            x.DateStart > DateTime.Now.AddDays(1) &&
+            x.DateEnd == null ? true : x.DateEnd > DateTime.Now.AddDays(1))
+            .OrderBy(x => x.DateStart));
+    }
+
+    private void JoinEvent(HEvent aktivEvent)
+    {
+        var thisUser = db.Users.FirstOrDefault(x => x.Id == user.FindFirstValue(ClaimTypes.NameIdentifier));
+        if (thisUser is not null)
+        {
+            db.UserHEvents.Add(new UserHEvent() { HEvent = aktivEvent, User = thisUser });
+        }
+        db.SaveChanges();
+    }
+
+    private void LeaveEvent(HEvent aktivEvent)
+    {
+        var thisUser = db.Users.FirstOrDefault(x => x.Id == user.FindFirstValue(ClaimTypes.NameIdentifier));
+        if (thisUser is not null)
+        {
+            var delet = db.UserHEvents.FirstOrDefault(x =>
+                x.User.Id == user.FindFirstValue(ClaimTypes.NameIdentifier) &&
+                x.HEvent.ID == aktivEvent.ID);
+            if (delet is not null)
+            {
+                db.UserHEvents.Remove(delet);
+            }
+        }
+        db.SaveChanges();
+    }
+    private bool CheckJoin(HEvent aktivEvent)
+    {
+        return db.UserHEvents.FirstOrDefault(x =>
+            x.User.Id == user.FindFirstValue(ClaimTypes.NameIdentifier) &&
+            x.HEvent.ID == aktivEvent.ID)
+            is not null;
+    }
 }

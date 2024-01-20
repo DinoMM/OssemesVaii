@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Data\Media\videos\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Data\Media\Storage\user\" />
   </ItemGroup>
 
   <ItemGroup>

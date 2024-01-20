@@ -1,6 +1,54 @@
 ﻿@page "/Accommodation/ApartmanDeluxe"
-<h3>RoomApartDelux</h3>
+
+<ComponentRoom ModeledRoom="_room"></ComponentRoom>
 
 @code {
+    private Room _room;
 
+    public RoomApartDelux()
+    {
+        _room = new Room();
+
+        _room.RoomCategory = "Izba ApaDelux";
+        _room.Describe = new string[]
+        {
+            "Vstupná hala s veľkou uzavretou skriňou, šatníkom, veľkým zrkadlom a trezorom",
+            "Izba s posteľou typu king-size alebo queen-size alebo twin (oddeliteľnými) posteľami, pracovný stôl, kreslo, LED TV (káblové a rozhlasové programy), telefón, minichladnička s minibarom, nástenné zrkadlo, vybavenie na prípravu čaju a kávy, klimatizácia a kúrenie, WiFi",
+            "Kúpeľňa so sprchou alebo vaňou/sprchou, WC, kozmetické zrkadlo s osvetlením, sušič vlasov, telefón a toaletné potreby."
+        };
+        _room.Furnishing = new string[]
+        {
+            "Posteľ King Size", "Posteľ Queen Size", "Manželská posteľ", "Dvojlôžko s oddelenými posteľami", "Prístelka",
+            "Pracovný stôl", "Stolička", "Šatník", "Trezor", "Mini chladnička"
+        };
+        _room.Bathroom = new string[]
+        {
+            "Sprcha","Sprcha alebo vaňa","Jedno umývadlo","WC v kúpeľni","Samostatné WC","Kozmetické zrkadlo","Kozmetické zrkadlo so svetlom",
+            "Toaletné potreby","Čiapka na sprchovanie","Župan","Papuče","Uteráky do Spa & Wellness","Kúpeľná taška","Súprava na šitie","Súprava na čistenie topánok",
+            "Fén","Telefón"
+        };
+        _room.Services = new string[]
+        {
+            "Voda pri príchode","Denne fľaša vody","Služba Turn-down","Služba Wake-up","Zariadenie na prípravu čaju a kávy",
+            "Darček na privítanie","Pranie bielizne","Chemické čistenie","Minibar","Raňajky na izbu","12h izbová služba",
+        };
+        _room.Photos = new string[] { };        //TODO
+        _room.MaxNumberOfGuest = 6;
+        _room.Cost = 210;
+        _room.RoomIds = new string[]
+        {
+            "301","302"
+        };
+
+    }
+
+    public Room getRoom()
+    {
+        return _room;
+    }
+
+    public static Room GetRoomInfo()
+    {
+        return new RoomApartDelux().getRoom();
+    }
 }

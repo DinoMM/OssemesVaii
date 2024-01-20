@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.JSInterop;
 using OSsemes.Areas.Identity.Data;
@@ -15,13 +16,13 @@ namespace OSsemes.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         private readonly SignInManager<IdentityUserOwn> _signInManager;
-        
+
 
         public LoginModel(SignInManager<IdentityUserOwn> signInManager)
         {
             _signInManager = signInManager;
-            
         }
+        
         public void OnGet()
         {
             ReturnUrl = Url.Content("~/");
@@ -38,22 +39,22 @@ namespace OSsemes.Areas.Identity.Pages.Account
                 {
                     return LocalRedirect(ReturnUrl);
                 }
+                ModelState.AddModelError(String.Empty, "Zlé prihlasovacie údaje");
             }
             return Page();
         }
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Email musí by vyplnenı")]
             [EmailAddress]
             [MaxLength(320)]
             public string Email { get; set; }
 
           
 
-            [Required()]
-            [DataType(DataType.Password, ErrorMessage = "Password must contains capital letter, small letter and number") ]
-            [MinLength(6)]
+            [Required(ErrorMessage = "Heslo musí by vyplnené")]
+            [DataType(DataType.Password, ErrorMessage = "Zadané údaje sú chybné") ]
             [MaxLength(64)]
             public string Password { get; set; }
 

@@ -1,0 +1,176 @@
+﻿@page "/CreateEvent"
+@using System.Security.Claims;
+@using OSsemes.Data.Database;
+@inject IConfiguration config
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+<InfoModal @ref="infoMod" Text="Vytvorenie podujatia prebehlo úspešne.">
+</InfoModal>
+
+<h3 class="d-flex justify-content-center">Vytvoriť podujatie</h3>
+
+<section class="background-own-white d-flex justify-content-center">
+    <form class="w-50 ">
+        <div>
+            <label>Názov</label>
+            <InputText class="form-control" @bind-Value="@model.Title" />
+        </div>
+        <div>
+            <label>Popis</label>
+            <InputTextArea class="form-control" @bind-Value="@model.Description" />
+        </div>
+        <div>
+            <label>Začiatok podujatia</label>
+            <InputDate class="form-control" Type="InputDateType.DateTimeLocal" min="@DateTime.Today.ToString("dd-MM-yyyy")" @bind-Value="@model.DateStart" />
+        </div>
+        <div>
+            <label>Koniec podujatia (Nie je potrebné zadávať)</label>
+            <InputDate class="form-control" Type="InputDateType.DateTimeLocal" min="@DateTime.Today.ToString("dd-MM-yyyy")" @bind-Value="@model.DateEnd" />
+        </div>
+        <div>
+            <label>Titulný obrázok</label>
+            <InputFile class="form-control" OnChange="@OnInputFileChange" accept=".png,.jpg,.jpeg" />
+        </div>
+        @if (errors.Count > 0)
+        {
+            <h2>Errors</h2>
+            <ul class="text-danger">
+                @foreach (var error in errors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+        <button type="button" class="btn btn-primary m-2" @onclick="ProcessForm">Vytvoriť</button>
+    </form>
+
+    @*  @if (!String.IsNullOrEmpty(loadedPicturePath))
+    {
+    <img src="@loadedPicturePath" alt="Uploaded Image" width="400" />
+    } *@
+
+</section>
+
+@code {
+    private  List<string> errors = new();
+    private int maxAllowedfilles = 1;
+    private long maxFileSize = 1024 * 1024 * 5;     //max 5 mb 
+    private string loadedPicturePath;
+    IBrowserFile? file;
+
+    private ClaimsPrincipal user;
+
+
+
+    private HEvent model = new() { DateStart = DateTime.Now, DateEnd = null };
+    private InfoModal infoMod;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+
+        if (!user.Identity.IsAuthenticated || user.IsInRole("Guest"))     //ak neni nikto prihlaseny
+        {
+            navManager.NavigateTo("#");
+            return;
+        }
+    }
+
+    private async Task ProcessForm()
+    {
+        errors.Clear();
+        //kontrola vstupov
+        if (String.IsNullOrEmpty(model.Title))
+        {
+            errors.Add("Názov musí byť zadaný.");
+            return;
+        }
+        if (String.IsNullOrEmpty(model.Description))
+        {
+            errors.Add("Popis musí byť zadaný.");
+            return;
+        }
+        if (model.DateStart < DateTime.Now.AddDays(1))
+        {
+            errors.Add("Dátum začiatku je moc skoro.");
+            return;
+        }
+        if (model.DateEnd is not null && model.DateEnd < model.DateStart)
+        {
+            errors.Add("Dátum konca je skorej ako dátum začiatku.");
+            return;
+        }
+        if (file is null)
+        {
+            errors.Add("Je nutné vložiť obrázok.");
+            return;
+        }
+        //vytvorenie subora s obrazkom
+        await SaveImage();
+        //ulozenie do db
+        if (errors.Count > 0)
+        {
+            return;
+        }
+        db.Events.Add(model);
+        await db.SaveChangesAsync();
+        model = new();
+        await infoMod.OpenModal();
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+
+        if (e.FileCount > maxAllowedfilles)         //kontrola keby sme chceli viacej suborov
+        {
+            errors.Add("Nemozno nahrat viacej suborov");
+            return;
+        }
+
+        file = e.File;
+    }
+
+    private async Task SaveImage()
+    {
+        if (file is null)
+        {
+            errors.Add("Logic error");
+            return;
+        }
+
+        try
+        {
+            if (!String.IsNullOrEmpty(loadedPicturePath))       //vymazanie uz existujuce subora (do buducna si to tu necham)
+            {
+                string existingFilePath = Path.Combine(config.GetValue<string>("FileStorage"), "user", Path.GetFileName(loadedPicturePath));
+                if (File.Exists(existingFilePath))
+                {
+                    File.Delete(existingFilePath);
+                }
+            }
+
+            //todo mozno pridat osetrenie proti inym priponam ako je obrazok
+
+            string newFileName;
+            do
+            {
+                newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));         //vytvorenie nahodneho mena, meno je ostrene proti duplicite
+            } while (File.Exists(Path.Combine(config.GetValue<string>("FileStorage"), "user", newFileName)));
+            string path = Path.Combine(config.GetValue<string>("FileStorage"), "user", newFileName);
+            string logicPath = Path.Combine(config.GetValue<string>("FileStorage"), "user");
+            Directory.CreateDirectory(logicPath);           //vytvorenie cesty pre ulozenie subora
+
+            await using FileStream fs = new(path, FileMode.Create);         //vytvorenie streamu, ktory sa automaticky zavrie lebo using
+            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);         //hlavne prekopirovanie, limitovana velkost
+            loadedPicturePath = Path.Combine(config.GetValue<string>("FileStorageLogic"), "user", newFileName);     //tu sa ulozi logicka cesta k obrazku a je mozne ho zobrazu/ulozit do DB
+            model.ImagePath = loadedPicturePath;
+        }
+        catch (Exception ex)
+        {
+            errors.Add($"File: {file.Name} Error: {ex.Message}");
+        }
+    }
+}

@@ -1,0 +1,110 @@
+﻿@page "/ManageEvents"
+@using OSsemes.Data.Database;
+@using System.Security.Claims;
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataContext db
+
+<InfoModal @ref="infoMod" Text="@infoModText" Header="Zoznam prihlásených použivateľov">
+</InfoModal>
+<ApproveModal @ref="deleteMod" Text="Naozaj chcete odstrániť toto podujatie?"
+              Header="Odstániť"
+              FuncOnSucc="() => Vymaz(oznEvent)"
+              FuncOnDiss="EventCallback.Empty">
+</ApproveModal>
+
+<header>
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis txt-font-own">Všetky podujatia</h1>
+        <p class="fs-5 text-body-secondary"></p>
+    </div>
+</header>
+
+<div class="overflow-scroll" style="max-height: 18rem; min-height: 5rem">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Názov</th>
+                <th scope="col">Začiatok</th>
+                <th scope="col">Koniec</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var evnt in zoznamPodujati)
+            {
+                <tr>
+                    <td scope="row">@evnt.Title</td>
+                    <td>@evnt.DateStart.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@(evnt.DateEnd?.ToString("dd.MM.yyyy HH:mm") ?? " - ")</td>
+                    <td>
+                        <a type="button" @onclick="(() => ZobrazPrihlas(evnt))"><i class="bi bi-person-lines-fill btn btn-sm btn-secondary"></i></a>
+                        <a type="button" @onclick="(() => VymazAsync(evnt))"><i class="bi bi-trash btn btn-sm btn-danger"></i></a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private InfoModal infoMod;
+    private string infoModText;
+    private List<HEvent> zoznamPodujati = new();
+    private ApproveModal deleteMod;
+    private HEvent oznEvent;
+
+    private ClaimsPrincipal user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+
+        if (!user.Identity.IsAuthenticated || user.IsInRole("Guest"))     //ak neni nikto prihlaseny
+        {
+            navManager.NavigateTo("#");
+            return;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        zoznamPodujati.AddRange(db.Events.OrderBy(x => x.DateStart)); //utriedene podla datumu
+    }
+
+    private async void VymazAsync(HEvent active)       //otvori sa modal s potvrdenim
+    {
+        oznEvent = active;
+        await deleteMod.OpenModal();
+    }
+    private void Vymaz(HEvent active)
+    {
+        db.Remove(active);
+        zoznamPodujati.Remove(active);
+        db.SaveChanges();               //integrita pri mazaní zabezpečená automaticky cascade remove
+    }
+    private async void ZobrazPrihlas(HEvent active)       //zobrazi vsetkych prihlasenych ludi na event spolu s informaciou, ci su aktualne tu
+    {
+        var list = db.UserHEvents.Include(x => x.User).Where(x => x.HEvent.ID == active.ID).ToList();
+        infoModText = "";
+        foreach (var item in list)
+        {
+            var isThere = db.Rezervations.FirstOrDefault(x =>
+                x.GuestId == item.User.Id &&
+                x.ArrivalDate <= DateTime.Now &&
+                x.DepartureDate >= DateTime.Now)
+                is not null;
+            infoModText += item.User.Name + " " + item.User.Surname + " " + item.User.Email + " " + (isThere ? "Ubytovaný" : " - ") + "<br>";
+        }
+        if (String.IsNullOrEmpty(infoModText))
+        {
+            infoModText = "Nikto sa zatiaľ neprihlásil na túto akciu.";
+        }
+        StateHasChanged();
+        await infoMod.OpenModal();
+
+    }
+}
