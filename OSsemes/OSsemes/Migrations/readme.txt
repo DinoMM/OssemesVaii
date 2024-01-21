@@ -1,3 +1,5 @@
+Migracie robene na zaklade tutorialov a dopomoc AI a trochu testovania
+
 Ako vytvorit migraciu.
 	pridaj/zmen/vymaz tabulku, pravidlo ...
 

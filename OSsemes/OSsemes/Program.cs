@@ -24,7 +24,7 @@ builder.Services.AddServerSideBlazor();
 
 
 ///////////////////SQL SERVER CONNECTION/////////////////////////////
-SqlConnectionStringBuilder DBStringBuilder = new SqlConnectionStringBuilder();
+SqlConnectionStringBuilder DBStringBuilder = new SqlConnectionStringBuilder();  //(pomohol som si z internetu tutoriály/AI)
 ;
 DBStringBuilder.DataSource = Environment.GetEnvironmentVariable("DB_H");
 DBStringBuilder.UserID = "sa";
@@ -37,7 +37,7 @@ DBStringBuilder.TrustServerCertificate = true;
 //builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(DBStringBuilder.ConnectionString));
 
 ///////////////////////Identity////////////////
-builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(DBStringBuilder.ConnectionString));
+builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(DBStringBuilder.ConnectionString));  //(pomohol som si z internetu tutoriály/AI)
 
 builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
     {
@@ -51,7 +51,7 @@ builder.Services.AddIdentity<IdentityUserOwn, IdentityRole>(opt =>
 
     }).AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders()
-    .AddRoles<IdentityRole>();
+    .AddRoles<IdentityRole>();      //(pomohol som si z internetu tutoriály/AI)
 
 
 
@@ -68,8 +68,8 @@ var app = builder.Build();
 ////pridavanie potrebnych zánamov do db ak sa nenájdu
 using (var scope = app.Services.CreateScope())      //vytvorenie zakladnych uctov
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUserOwn>>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();    //(pomohol som si z internetu tutoriály/AI)
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUserOwn>>(); //(pomohol som si z internetu tutoriály/AI)
     if (dbContext is not null && userManager is not null)
     {
         RolesData.SeedRoles(app.Services).Wait();       //pridanie roli do systemu
@@ -129,7 +129,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
-app.UseStaticFiles(new StaticFileOptions
+app.UseStaticFiles(new StaticFileOptions        //(pomohol som si z internetu tutoriály/AI)
 {
     FileProvider = new PhysicalFileProvider(            //vlastna cesta k media suborom
      Path.Combine(Directory.GetCurrentDirectory(), "Data/Media")),

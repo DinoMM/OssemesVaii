@@ -21,7 +21,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
 
 
         public RegisterModel(SignInManager<IdentityUserOwn> signInManager,
-            UserManager<IdentityUserOwn> userManager)
+            UserManager<IdentityUserOwn> userManager)           //(pomohol som si z internetu tutoriály/AI)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -32,7 +32,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
             ReturnUrl = Url.Content("~/");
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()      //(pomohol som si z internetu tutoriály/AI)
         {
             ReturnUrl = Url.Content("/Identity/Account/Login");
             if (ModelState.IsValid)
@@ -41,8 +41,9 @@ namespace OSsemes.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(identity, Input.Password);      //posle post s identitou usera a spolu s zahashovanym heslom
                 if (result.Succeeded)
                 {
-                    //await _signInManager.SignInAsync(identity, isPersistent: false);        // nastavi cookies
+                    //await _signInManager.SignInAsync(identity, isPersistent: false);        // rovno prihlasi
                     await _userManager.AddToRoleAsync(identity, "Guest");                 //nastavi default rolu
+                    Response.Cookies.Append("NewRegister", "true");             //nastavi cookies (od AI)
                     return LocalRedirect(ReturnUrl);
                 }
 
@@ -52,7 +53,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public class InputModel
+        public class InputModel         //robené ruène pomocou dokumentacie
         {
             [Required(ErrorMessage = "Email musí by vyplnenı")]
             [EmailAddress]
@@ -60,7 +61,7 @@ namespace OSsemes.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Heslo musí by vyplnené")]
-            [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Heslo musí obsahova minimálne 1 ve¾kı znak, 1 malı znak, 1 èíslicu")]
+            [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Heslo musí obsahova minimálne 1 ve¾kı znak, 1 malı znak, 1 èíslicu")]  //regular expresion z AI
             [DataType(DataType.Password)]
             [MinLength(6, ErrorMessage = "Heslo musí ma dåku minimálne 6 znakov")]
             [MaxLength(64, ErrorMessage = "Heslo musí ma dåku maximálne 6 znakov")]

@@ -11,7 +11,7 @@ using OSsemes.Areas.Identity.Data;
 namespace OSsemes.Data.Database
 {
     
-    public class DataContext : IdentityDbContext<IdentityUserOwn>
+    public class DataContext : IdentityDbContext<IdentityUserOwn>       //(pomohol som si z internetu tutoriály/AI)
     {
         public DataContext(DbContextOptions<DataContext> opt) : base(opt) 
         {
@@ -31,7 +31,7 @@ namespace OSsemes.Data.Database
             }
         }
 
-        public DbSet<Rezervation> Rezervations { get; set; }
+        public DbSet<Rezervation> Rezervations { get; set; }            //moja tvorba
         public DbSet<Room> HRooms { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<HEvent> Events { get; set; }
@@ -40,7 +40,7 @@ namespace OSsemes.Data.Database
         
     }
 
-    public class YourDbContextFactory : IDesignTimeDbContextFactory<DataContext>
+    public class YourDbContextFactory : IDesignTimeDbContextFactory<DataContext>    //(pomohol som si z internetu tutoriály/AI)
     {
         public DataContext CreateDbContext(string[] args)
         {

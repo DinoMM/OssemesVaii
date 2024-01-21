@@ -6,7 +6,7 @@
 @inject SignInManager<IdentityUserOwn> SignManager
 
 @functions {
-    public async Task<IActionResult> OnGet()
+    public async Task<IActionResult> OnGet() //(pomohol som si z internetu tutoriály/AI)
     {
         if (SignManager.IsSignedIn(User))
         {

@@ -62,6 +62,7 @@
 </div>
 
 <script>
+    // (pomohol som si z internetu tutoriály / AI)
     function search() {
         var input, filter, table, tr, td0, td1, i, txtValue;
         input = document.getElementById("searchTerm"); // ziskanie zadanej hodnoty
@@ -146,26 +147,14 @@
         var email = (string)userFormMod.Outputs[2];
         var pass = (string)userFormMod.Outputs[3];
         var role = (string)userFormMod.Outputs[4];
-        // Console.WriteLine(name);
-        // Console.WriteLine(sur);
-        // Console.WriteLine(email);
-        // Console.WriteLine(pass);
-        // Console.WriteLine(role);
         //Overenie vstupov
-        if (!Regex.IsMatch(pass, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"))
+        if (!Regex.IsMatch(pass, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"))        // regex od AI
         {
             usrInfoModText = "Zadané heslo nie je podľa normy, účet nebol vytvorený";
             StateHasChanged();
             await usrInfoMod.OpenModal();
             return;
         }
-        // if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\\.[^@]+$"))
-        // {
-        //     usrInfoModText = "Zadaný email nie je podľa normy, účet nebol vytvorený";
-        //     StateHasChanged();
-        //     await usrInfoMod.OpenModal();
-        //     return;
-        // }
         if (role != "Guest" && role != "Reception" && role != "Admin")
         {
             usrInfoModText = "Zle zadaná rola.";
@@ -189,6 +178,5 @@
         createU.Created = false;
         StateHasChanged();
         await usrInfoMod.OpenModal();
-        Console.WriteLine("konec");
     }
 }

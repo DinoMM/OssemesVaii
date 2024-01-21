@@ -1,7 +1,7 @@
-﻿@page 
+﻿@page
 @model OSsemes.Areas.Identity.Pages.Account.LoginModel
 @{
-
+    //(pomohol som si z internetu tutoriály/AI)
 }
 <div class="text-left w-75">
     <section>
@@ -12,7 +12,10 @@
                         <div class="card" style="border-radius: 15px;">
                             <div class="card-body p-5">
                                 <h2 class="text-uppercase text-center mb-5">Prihlásiť sa do služby <a href="~/">Hotela x</a> </h2>
-
+                                @if (!String.IsNullOrEmpty(Model.SuccRegistration))
+                                {
+                                    <label class="text-success">@Model.SuccRegistration</label>
+                                }
                                 <form id="account" method="post">
                                     <div asp-validation-summary="All" class="text-danger"></div>
 

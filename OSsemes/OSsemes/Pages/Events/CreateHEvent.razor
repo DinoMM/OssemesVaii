@@ -130,7 +130,7 @@
             return;
         }
 
-        file = e.File;
+        file = e.File;          //docastne ulozenie obrazka
     }
 
     private async Task SaveImage()
@@ -164,7 +164,7 @@
             Directory.CreateDirectory(logicPath);           //vytvorenie cesty pre ulozenie subora
 
             await using FileStream fs = new(path, FileMode.Create);         //vytvorenie streamu, ktory sa automaticky zavrie lebo using
-            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);         //hlavne prekopirovanie, limitovana velkost
+            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);         //hlavne prekopirovanie, limitovana velkost (pomohol som si z internetu tutoriály/AI)
             loadedPicturePath = Path.Combine(config.GetValue<string>("FileStorageLogic"), "user", newFileName);     //tu sa ulozi logicka cesta k obrazku a je mozne ho zobrazu/ulozit do DB
             model.ImagePath = loadedPicturePath;
         }

@@ -67,7 +67,8 @@
             @if (ModeledRoom.RoomCategory == "Izba ApaDelux")
             {
                 <div>Izba Aparman Deluxe </div>
-            } else
+            }
+            else
             {
                 @ModeledRoom.RoomCategory
             }
@@ -78,74 +79,80 @@
 </header>
 
 <!-- ------------------------------------------------ -->
-<div class="ms-5 mb-3">
-    <div>
-        <h3>Popis izby</h3>
+<div class="">
+    <div class="ms-5 mb-3">
+        <div class="container list">
+            <div>
+                <h3>Popis izby</h3>
+            </div>
+
+            <ul style="list-style-type:disc;">
+                <li>
+                    Maximálny počet osôb: @ModeledRoom.MaxNumberOfGuest
+                </li>
+                <li>
+                    Cena izby na noc: @ModeledRoom.Cost
+                </li>
+
+                @foreach (string paragraf in ModeledRoom.Describe)
+                {
+                    <li>
+                        @paragraf
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
-
-    <ul style="list-style-type:disc;">
-        <li>
-            Maximálny počet osôb: @ModeledRoom.MaxNumberOfGuest
-        </li>
-        <li>
-            Cena izby na noc: @ModeledRoom.Cost
-        </li>
-
-        @foreach (string paragraf in ModeledRoom.Describe)
-        {
-            <li>
-                @paragraf
-            </li>
-        }
-    </ul>
 </div>
 
-<div class="ms-5 mb-3">
-    <div>
-        <h3>Vybavenie</h3>
+<div class="container">
+    <div class="list ms-5 mb-3">
+        <div>
+            <h3>Vybavenie</h3>
+        </div>
+
+        <ul style="list-style-type:disc;">
+            @foreach (string item in ModeledRoom.Furnishing)
+            {
+                <li>
+                    @item
+                </li>
+            }
+        </ul>
     </div>
 
-    <ul style="list-style-type:disc;">
-        @foreach (string item in ModeledRoom.Furnishing)
-        {
-            <li>
-                @item
-            </li>
-        }
-    </ul>
-</div>
+    <div class="list ms-5 mb-3">
+        <div>
+            <h3>Kúpeľna a doplnky</h3>
+        </div>
 
-<div class="ms-5 mb-3">
-    <div>
-        <h3>Kúpeľna a doplnky</h3>
+        <ul style="list-style-type:disc;">
+            @foreach (string item in ModeledRoom.Bathroom)
+            {
+                <li>
+                    @item
+                </li>
+            }
+        </ul>
     </div>
 
-    <ul style="list-style-type:disc;">
-        @foreach (string item in ModeledRoom.Bathroom)
-        {
-            <li>
-                @item
-            </li>
-        }
-    </ul>
-</div>
+    <div class="list ms-5 mb-3">
+        <div>
+            <h3>Služby</h3>
+        </div>
 
-<div class="ms-5 mb-3">
-    <div>
-        <h3>Služby</h3>
+        <ul style="list-style-type:disc;">
+            @foreach (string item in ModeledRoom.Services)
+            {
+                <li>
+                    @item
+                </li>
+            }
+        </ul>
     </div>
-
-    <ul style="list-style-type:disc;">
-        @foreach (string item in ModeledRoom.Services)
-        {
-            <li>
-                @item
-            </li>
-        }
-    </ul>
 </div>
 <!-- ------------------------------------------------ -->
-<div>
+<div class="d-flex justify-content-center">
     <a class="w-25 ms-5 mb-3 btn btn-lg btn-primary text-center" href="Accommodation/Reserve" @onclick="SetRoom">
         Rezervovať
     </a>

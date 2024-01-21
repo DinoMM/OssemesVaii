@@ -14,11 +14,12 @@ namespace OSsemes.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
         public string ReturnUrl { get; set; }
+        public string SuccRegistration { get; set; } = "";
 
         private readonly SignInManager<IdentityUserOwn> _signInManager;
 
-
-        public LoginModel(SignInManager<IdentityUserOwn> signInManager)
+        
+        public LoginModel(SignInManager<IdentityUserOwn> signInManager)     //(pomohol som si z internetu tutoriály/AI)
         {
             _signInManager = signInManager;
         }
@@ -26,9 +27,18 @@ namespace OSsemes.Areas.Identity.Pages.Account
         public void OnGet()
         {
             ReturnUrl = Url.Content("~/");
+            var cookieValue = Request.Cookies["NewRegister"];       //ziskanie cookies o tom ci sa uzivatel uspesne zaregistroval (od AI)
+            if (!String.IsNullOrEmpty(cookieValue))
+            {
+                if (cookieValue == "true")
+                {
+                    SuccRegistration = "Registrácia prebehla úspešne";
+                    Response.Cookies.Delete("NewRegister");     //vymazanie
+                }
+            }
         }
        
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()      //(pomohol som si z internetu tutoriály/AI)
         {
             ReturnUrl = Url.Content("~/");
             if (ModelState.IsValid)

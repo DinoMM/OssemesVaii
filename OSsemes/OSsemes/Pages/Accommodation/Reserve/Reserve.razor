@@ -34,9 +34,9 @@
         @scopedRoom.RoomCategory
     }
 </h3>
-
+@* (pomohol som si z internetu tutoriály/AI ako na formulare) *@
 <div class="d-flex justify-content-center">
-    <EditForm EditContext="editContext" OnValidSubmit="ValidSubmit">
+    <EditForm EditContext="editContext" OnValidSubmit="ValidSubmit">        
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -106,8 +106,6 @@
 
         editContext = new EditContext(model);
         validationMessageStore = new ValidationMessageStore(editContext);
-
-
     }
 
     private void clearValMess()
@@ -117,14 +115,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();        //(pomohol som si z internetu tutoriály/AI)
         user = authState.User;          //ziskanie aktualneho prihlaseneho pouzivatela
 
     }
 
-    private void calculateSum()
+    private void calculateSum()     //vypocitanie sumy
     {
         totalSum = 0.0;
+        //kontrola validnych vstupov
         if (model.ArrivalDate is null || model.DepartureDate is null)
         {
             return;
@@ -145,6 +144,7 @@
         {
             return;
         }
+        //vypocet sumy
         double costDay = string.IsNullOrEmpty(scopedRoom.RoomCategory) ? scopedRes.Room.Cost : scopedRoom.Cost;
         totalSum = (int)(model.DepartureDate.Value.Date - model.ArrivalDate.Value.Date).TotalDays * costDay;
     }
@@ -263,7 +263,7 @@
             {
                 return;
             }
-            if (string.IsNullOrEmpty(scopedRoom.RoomCategory))
+            if (string.IsNullOrEmpty(scopedRoom.RoomCategory))      //zobrazenie informacie podla toho či vytvarame alebo menime rezervaciu
             {
                 sumarize = "Chcete si zmeniť tento termín na nový?<br>" +
                 "Číslo izby: " + newReservation.RoomNumber + "<br>" +
@@ -336,11 +336,11 @@
                     scopedRes.setFromReservation(new Rezervation());
                     db.Rezervations.First(x => x.Id == newReservation.Id).setFromReservation(newReservation);
                     await db.SaveChangesAsync();            //ulozenie stavu
-                    await sessionStorage.SetItemAsync("ResModified", true);
-                    navManager.NavigateTo(user.IsInRole("Reception") ? "ManageReservations" : "MyReservations");
+                    await sessionStorage.SetItemAsync("ResModified", true);     //nastavi cookies
+                    navManager.NavigateTo(user.IsInRole("Reception") ? "ManageReservations" : "MyReservations");    //pri modifikacii sa vrati uzivatel tam, odkial je
                     return;
                 }
-                if (user.IsInRole("Reception"))        //recepcny nesmie vytvarat rezervacie len manit
+                if (user.IsInRole("Reception"))        //recepcny nesmie vytvarat rezervacie len menit
                 {
                     Console.WriteLine("Recepcny nesmie vytvarat rezervacie");
                     return;
